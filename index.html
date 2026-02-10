@@ -277,11 +277,6 @@
         .panel {
             box-shadow: var(--glass-shadow); transition: 0.3s ease, transform 0.3s; position: relative;
             display: flex; flex-direction: column; z-index: 10;
-            padding: 40px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
         }
         .panel:hover { transform: translateY(-10px); border-color: var(--primary); }
         .panel-solid { background: #000; border: 1px solid #333; }
@@ -401,6 +396,15 @@
         .brand { font-family: var(--font-display); color: #fff; font-weight: 900; letter-spacing: 1px; display: flex; align-items: center; gap: 20px; font-size: 1rem; text-transform: uppercase; line-height: 1.2; }
         [data-theme="light"] .brand { color: var(--text-main); }
         .brand span { color: var(--primary); }
+        
+        /* HEADER VIDEO LOGO STYLE */
+        .brand-video {
+            height: 30px;
+            width: 60px;
+            object-fit: cover;
+            border: 3.61px solid var(--primary);
+            box-shadow: 0 0 15px rgba(1,169,130,0.3);
+        }
 
         .theme-ui { position: fixed; top: 20px; right: 30px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #333; backdrop-filter: blur(10px); display: flex; gap: 10px; border-radius: 50px; }
         .theme-btn { background: transparent; border: 1px solid #555; color: #fff; padding: 8px 20px; font-family: var(--font-code); cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; border-radius: 20px; font-weight: 700; }
@@ -412,33 +416,6 @@
         [data-theme="light"] h3 { border-bottom-color: #eee; }
         p { color: var(--text-main); line-height: 1.8; margin-bottom: 25px; font-size: 1.1rem; }
         .code-block { background: #1e1e1e; color: #d4d4d4; padding: 25px; border-radius: 12px; font-family: var(--font-code); font-size: 0.9rem; overflow-x: auto; margin: 20px 0; border-left: 5px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        /* TERMS AND CONDITIONS STYLES */
-        #terms {
-            background: #000;
-            padding: 80px 20px;
-            border-top: 1px solid var(--primary);
-        }
-        #terms h2 {
-            font-family: var(--font-code);
-            font-size: 2rem;
-            color: var(--primary);
-            margin-bottom: 40px;
-        }
-        .terms-content {
-            max-width: 800px;
-            margin: 0 auto;
-            font-family: var(--font-code);
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            line-height: 1.8;
-            column-count: 1;
-        }
-        @media (min-width: 1024px) {
-            .terms-content { column-count: 2; column-gap: 60px; }
-        }
-        .terms-content p { margin-bottom: 20px; }
-        .terms-content strong { color: var(--text-main); }
 
         @media (max-width: 1200px) {
             .grid-asym-1-1, .grid-asym-1-2, .grid-asym-2-1 { grid-template-columns: 1fr; }
@@ -471,7 +448,11 @@
     <!-- 2. UI HEADER -->
     <header class="header-bar">
         <div class="brand">
-            <div style="width: 40px; height: 40px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 900; color: var(--primary); font-size: 0.8rem;">HPE</div>
+            <!-- UPDATED: HEADER VIDEO LOGO (Relative Path) -->
+            <video class="brand-video" autoplay muted loop playsinline>
+                <source src="C:\Users\Administrator\Downloads\HPE Logo files\HPE Logo files\HPE Logo animation\HPE_LOGO_BUILD-ASSEMBLY_FINAL-5s_16x9_DarkMode.mp4" type="video/mp4">
+            </video>
+            
             HEWLETT PACKARD <span style="color: var(--primary); font-size: 1.2rem;">//</span> 
             <span style="color: var(--text-main);">ENTERPRISE</span>
         </div>
@@ -483,7 +464,7 @@
 
     <!-- HERO SECTION -->
     <section class="hero-header">
-        <!-- HERO MEDIA CONTAINER (Images Only) -->
+        <!-- HERO MEDIA CONTAINER (For mixed images/video) -->
         <div id="hero-media-layer"></div>
 
         <div class="hero-text-backdrop"></div>
@@ -546,7 +527,7 @@
                         </p>
                     </div>
 
-                    <!-- AUDIO CONTAINER 1 -->
+                    <!-- UPDATED: AUDIO CONTAINER 1 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>Mission Briefing</h5>
@@ -629,7 +610,7 @@
                     <p>Every empire is built on a blueprint. Before writing a single line of Java, we needed to understand the landscape.</p>
                     <p><strong>The Strategy:</strong> We analyzed the business need to manage employee records efficiently. We defined the data schema—ID, Name, Email, Title—and mapped out the REST endpoints (POST/GET) required to interface with the system. A three-layer architecture (Controller → Service → Model) was proposed to ensure modularity.</p>
                     
-                    <!-- AUDIO CONTAINER 2 -->
+                    <!-- UPDATED: AUDIO CONTAINER 2 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>Architectural Intent</h5>
@@ -674,7 +655,7 @@
                     <p>With the blueprint finalized, construction commenced. This is where abstract requirements transformed into tangible logic.</p>
                     <p>We implemented the <code>Employee</code> class with strict encapsulation—private fields accessed only via getters and setters. The <code>EmployeeManager</code> was deployed to handle in-memory data, ensuring the application could process requests in real-time. We configured JSON parsing for data exchange and established HTTP status codes (200 OK, 201 Created) for proper client communication.</p>
                     
-                    <!-- AUDIO CONTAINER 3 -->
+                    <!-- UPDATED: AUDIO CONTAINER 3 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>Development Log</h5>
@@ -701,7 +682,7 @@
                     <p>Robustness is defined by failure, or lack thereof. The final phase was a stress test of our logic.</p>
                     <p>Automated tests were initialized using <code>@BeforeEach</code> to ensure a clean slate for every trial. We asserted that adding an employee increased the list size by exactly one. We verified the existence of all critical fields (ID, Name, Email, Title). The result was comprehensive coverage with six passing tests, proving the system's integrity.</p>
 
-                    <!-- AUDIO CONTAINER 4 -->
+                    <!-- UPDATED: AUDIO CONTAINER 4 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>QA Results</h5>
@@ -746,7 +727,7 @@
                 <article class="panel">
                     <h3>Code Implementation</h3>
                     
-                    <!-- AUDIO CONTAINER 5 -->
+                    <!-- UPDATED: AUDIO CONTAINER 5 -->
                     <div class="audio-container" style="margin-bottom: 20px;">
                         <div class="audio-info">
                             <h5>Code Walkthrough</h5>
@@ -1624,32 +1605,6 @@ fetch(<span class="code-string">'/api/employees'</span>)
             </script>
         </section>
 
-        <!-- ======================================================= -->
-        <!-- SECTION 5: TERMS AND CONDITIONS -->
-        <!-- ======================================================= -->
-        <section id="terms">
-            <h2 style="text-align: center; color: var(--primary);">SYSTEM TERMS & CONDITIONS</h2>
-            <div class="terms-content">
-                <p><strong>1. ACCEPTANCE OF TERMS</strong><br>
-                By accessing this Technical Dossier ("The System"), you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions ("The Protocol"). If you do not agree with these terms, you must discontinue use of the system immediately.</p>
-                
-                <p><strong>2. INTELLECTUAL PROPERTY</strong><br>
-                All content, including but not limited to text, graphics, logos, images, and software, is the property of Hewlett Packard Enterprise or the content providers and is protected by international copyright laws. The simulation data generated is for portfolio demonstration purposes only.</p>
-
-                <p><strong>3. USER CONDUCT</strong><br>
-                You agree not to use the system for any unlawful purpose, to solicit others to perform or participate in any unlawful acts, or to violate any international, federal, provincial, or state regulations, rules, laws, or local ordinances.</p>
-
-                <p><strong>4. DATA PRIVACY</strong><br>
-                Your use of the system is subject to our Privacy Policy. By using this system, you consent to the collection and use of information as detailed in our policy. We do not store personal employee data on this public-facing interface.</p>
-
-                <p><strong>5. DISCLAIMER OF WARRANTIES</strong><br>
-                The materials on HPE's web site are provided "as is". HPE makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
-
-                <p><strong>6. LIMITATIONS</strong><br>
-                In no event shall HPE or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption,) arising out of the use or inability to use the materials on HPE's Internet site, even if HPE or an authorized representative has been notified orally or in writing of the possibility of such damage.</p>
-            </div>
-        </section>
-
         <footer style="text-align: center; padding: 100px 0; margin-top: 100px; color: var(--text-muted); font-family: var(--font-code); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1);">
             <p>© 2026 HEWLETT PACKARD ENTERPRISE // EXTREME TECHNICAL DOSSIER</p>
         </footer>
@@ -1657,37 +1612,40 @@ fetch(<span class="code-string">'/api/employees'</span>)
     </main>
 
     <script>
-        // --- 1. HERO SLIDESHOW LOGIC (IMAGES ONLY) ---
-        
-        // High quality tech/server images
-        const HERO_IMAGES = [
-            'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg', 
-            'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg',
-            'https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg',
-            'https://images.pexels.com/photos/280232/pexels-photo-280232.jpeg'
+        // --- 1. HERO SLIDESHOW LOGIC (MIXED IMAGES & VIDEO) ---
+
+        // UPDATED: HERO MEDIA - Exactly 2 Videos + Images
+        const HERO_MEDIA = [
+            { type: 'image', src: 'https://www.pickardchilton.com/sites/default/files/styles/gallery_image/public/1812.054.jpg?itok=pfXF4bEq' },
+            { type: 'video', src: 'assets\HPE Logo Broll2.mp4' }, // Video 1
+            { type: 'image', src: 'https://www.mmoser.com/wp-content/uploads/2023/09/hpe-sydney-reception-1200x675.jpg' },
+            { type: 'video', src: '\assets\HPE Logo Broll1.mp4"' }, // Video 2
+            { type: 'image', src: 'https://arktura.com/wp-content/uploads/2023/02/Arktura-Vapor-Pixel-HPE-Houston-TX_WEB_2-scaled.jpg' }
         ];
 
         let heroIndex = 0;
         const heroContainer = document.getElementById('hero-media-layer');
 
         function initHeroSlideshow() {
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                // If reduced motion, just show the first image statically
-                const img = document.createElement('img');
-                img.src = HERO_IMAGES[0];
-                img.className = 'hero-bg-element active';
-                img.alt = "Hero Background";
-                heroContainer.appendChild(img);
-                return;
-            }
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
             // Preload and append all elements
-            HERO_IMAGES.forEach((src, idx) => {
-                const img = document.createElement('img');
-                img.src = src;
-                img.alt = `Hero Slide ${idx+1}`;
-                img.className = 'hero-bg-element';
-                heroContainer.appendChild(img);
+            HERO_MEDIA.forEach((media, idx) => {
+                let el;
+                if(media.type === 'video') {
+                    el = document.createElement('video');
+                    el.src = media.src;
+                    el.autoplay = true;
+                    el.muted = true;
+                    el.loop = true;
+                    el.playsInline = true;
+                    el.className = 'hero-bg-element';
+                } else {
+                    el = document.createElement('img');
+                    el.src = media.src;
+                    el.className = 'hero-bg-element';
+                }
+                heroContainer.appendChild(el);
             });
 
             // Start with index 0 active
@@ -1697,12 +1655,16 @@ fetch(<span class="code-string">'/api/employees'</span>)
             setInterval(() => {
                 // Hide current
                 elements[heroIndex].classList.remove('active');
-                
+                if(elements[heroIndex].tagName === 'VIDEO') elements[heroIndex].pause();
+
                 // Next
                 heroIndex = (heroIndex + 1) % elements.length;
                 
                 // Show next
-                elements[heroIndex].classList.add('active');
+                const nextEl = elements[heroIndex];
+                nextEl.classList.add('active');
+                if(nextEl.tagName === 'VIDEO') nextEl.play();
+
             }, 6000);
         }
 
@@ -1755,7 +1717,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                         body.style.overflowY = 'auto';
                         pageWrapper.style.opacity = '1';
                         
-                        // Start Hero Slideshow
+                        // Start Mixed Hero Slideshow
                         initHeroSlideshow();
                     }, 3200);
                     
@@ -1775,7 +1737,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
             btn.classList.add('active');
         }
 
-        // --- 4. AUDIO PLAYER LOGIC ---
+        // --- 4. UPDATED: AUDIO PLAYER LOGIC ---
         // Map IDs to relative file paths
         const AUDIO_FILES = {
             'briefing': './assets/audio/briefing.mp3',
