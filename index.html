@@ -81,13 +81,8 @@
                 transition-duration: 0.01ms !important;
                 scroll-behavior: auto !important;
             }
-            
-            /* Disable specific motion-heavy effects */
             .hero-header { background-attachment: scroll !important; }
             .hero-content h1 .hword:hover { transform: none !important; }
-            .glassmorphic-img-container::after { display: none; }
-            
-            /* Force Vanilla Tilt to behave statically */
             .js-tilt-glare { display: none !important; }
             .js-tilt { transform: none !important; }
         }
@@ -109,7 +104,6 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             transition: opacity 0.5s ease, visibility 0.5s;
         }
-
         #intro-slideshow { z-index: 9999; opacity: 0; pointer-events: none; }
         #intro-slideshow.active { opacity: 1; pointer-events: auto; }
 
@@ -138,7 +132,6 @@
         .switch input:checked + .button { box-shadow: inset 5px 5px 10px #000, inset -5px -5px 10px #333; border-color: var(--primary); }
         .switch input:checked + .button .icon svg { fill: #000; }
 
-        /* Initiate Dossier Button - Glassmorphic + Effects */
         .initiate-dossier-btn {
             padding: 18px 50px;
             background: linear-gradient(135deg, rgba(1,169,130,0.12), rgba(255,255,255,0.02));
@@ -158,7 +151,6 @@
             position: relative;
             overflow: hidden;
         }
-
         .initiate-dossier-btn::before{
             content: '';
             position: absolute;
@@ -168,31 +160,16 @@
             background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
             mix-blend-mode: overlay;
         }
-
-        .initiate-dossier-btn::after{
-            content: '';
-            position: absolute;
-            left: -40%; top: -50%; width: 60%; height: 200%;
-            background: radial-gradient(closest-side, rgba(1,169,130,0.12), transparent 60%);
-            transform: translateX(-30%) rotate(25deg);
-            opacity: 0; transition: opacity 0.4s, transform 0.6s;
-            pointer-events: none;
-        }
-
         .initiate-dossier-btn:hover{
             transform: translateY(-6px) scale(1.02);
             box-shadow: 0 20px 40px rgba(1,169,130,0.24), 0 0 40px rgba(1,169,130,0.06);
             background: linear-gradient(135deg, rgba(1,169,130,0.18), rgba(255,255,255,0.03));
         }
-
-        .initiate-dossier-btn:hover::after{ opacity: 1; transform: translateX(20%) rotate(25deg); }
-
-        .initiate-dossier-btn:active{ transform: translateY(-2px) scale(0.99); box-shadow: 0 10px 20px rgba(1,169,130,0.12); }
+        .initiate-dossier-btn:active{ transform: translateY(-2px) scale(0.99); }
 
         /* --- 3. LAYOUT & PARALLAX BACKGROUNDS --- */
         .page-wrapper { max-width: 1800px; margin: 0 auto; padding: 0 80px; position: relative; z-index: 10; opacity: 0; transition: opacity 1s ease; }
         
-        /* Section Global Settings */
         section { 
             min-height: 80vh; 
             display: flex; flex-direction: column; justify-content: center; 
@@ -200,55 +177,54 @@
             position: relative; 
             background-size: cover; 
             background-position: center; 
-            background-attachment: fixed; /* PARALLAX ENABLED HERE */
+            background-attachment: fixed;
             transition: background-image 1s ease-in-out; 
         }
         
-        @media (max-width: 768px) {
-            section { background-attachment: scroll; } /* Fix for mobile jitter */
-        }
+        @media (max-width: 768px) { section { background-attachment: scroll; } }
 
-        /* Hero Parallax */
+        /* HERO SECTION */
         .hero-header {
             width: 100vw; height: 100vh; position: relative; display: flex;
             align-items: center; justify-content: flex-start; 
-            background-size: cover; background-position: center; background-attachment: fixed; /* PARALLAX ENABLED HERE */
+            background-color: #000; /* Base color */
+            background-size: cover; background-position: center; background-attachment: fixed;
+            overflow: hidden;
         }
 
-        /* Details Parallax (Workspace/Coding) */
+        /* HERO DYNAMIC MEDIA LAYER */
+        #hero-media-layer {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1;
+        }
+        
+        .hero-bg-element {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out;
+            pointer-events: none;
+        }
+        .hero-bg-element.active { opacity: 1; }
+
+        /* Details Parallax */
         #details {
-            /* Updated to match case study vibe */
             background-image: url('https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1920');
         }
-        #details::before {
-            content: ''; position: absolute; inset: 0; 
-            background: rgba(5, 5, 5, 0.93); /* Heavy dark overlay for readability */
-            z-index: 1;
-        }
+        #details::before { content: ''; position: absolute; inset: 0; background: rgba(5, 5, 5, 0.93); z-index: 1; }
         [data-theme="light"] #details::before { background: rgba(244, 246, 248, 0.93); }
 
-        /* Phases Parallax (Strategy/Abstract) */
+        /* Phases Parallax */
         #phases {
-            /* Updated to match abstract/case study vibe */
             background-image: url('https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1920');
         }
-        #phases::before {
-            content: ''; position: absolute; inset: 0; 
-            background: rgba(5, 5, 5, 0.93); 
-            z-index: 1;
-        }
+        #phases::before { content: ''; position: absolute; inset: 0; background: rgba(5, 5, 5, 0.93); z-index: 1; }
         [data-theme="light"] #phases::before { background: rgba(244, 246, 248, 0.93); }
 
-        /* Guide Parallax (Data/Network) */
+        /* Guide Parallax */
         #guide {
-            /* Updated to match corporate vibe */
             background-image: url('https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920');
         }
-        #guide::before {
-            content: ''; position: absolute; inset: 0; 
-            background: rgba(5, 5, 5, 0.93); 
-            z-index: 1;
-        }
+        #guide::before { content: ''; position: absolute; inset: 0; background: rgba(5, 5, 5, 0.93); z-index: 1; }
         [data-theme="light"] #guide::before { background: rgba(244, 246, 248, 0.93); }
 
         .hero-text-backdrop {
@@ -259,13 +235,10 @@
 
         .hero-content {
             position: relative; z-index: 3; max-width: 900px;
-            padding-left: 60px; /* Utmost Left */
-            text-align: left; animation: slideUp 1s ease-out forwards;
+            padding-left: 60px; text-align: left; animation: slideUp 1s ease-out forwards;
         }
         
         @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-
-        /* Entrance animations */
         @keyframes fadeInSlideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes fadeInScale { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 
@@ -276,16 +249,15 @@
         }
         .hero-content h1 span { color: var(--primary); text-shadow: 0 0 20px rgba(1,169,130,0.6); }
 
-        /* Hero word hover animations */
         .hero-content h1 .hword { display: inline-block; transition: transform 320ms cubic-bezier(.2,.9,.2,1), color 220ms ease, text-shadow 220ms ease; will-change: transform; cursor: default; animation: fadeInSlideUp 0.7s ease-out forwards; }
         .hero-content h1 .hword::after { content: ''; display: block; height: 4px; background: linear-gradient(90deg, rgba(1,169,130,0.9), rgba(255,255,255,0.06)); width: 0%; border-radius: 4px; transition: width 360ms ease; margin-top: 8px; }
         .hero-content h1 .hword:hover { transform: translateY(-8px) rotate(-1.5deg) scale(1.06); color: var(--primary); text-shadow: 0 12px 40px rgba(1,169,130,0.45); }
         .hero-content h1 .hword:hover::after { width: 100%; }
-        /* subtle stagger for multiple words */
-        .hero-content h1 .hword:nth-child(1) { animation-delay: 0.1s; transition-delay: 0ms; }
-        .hero-content h1 .hword:nth-child(2) { animation-delay: 0.2s; transition-delay: 40ms; }
-        .hero-content h1 .hword:nth-child(3) { animation-delay: 0.3s; transition-delay: 80ms; }
-        .hero-content h1 .hword:nth-child(5) { animation-delay: 0.45s; transition-delay: 0ms; }
+        
+        .hero-content h1 .hword:nth-child(1) { animation-delay: 0.1s; }
+        .hero-content h1 .hword:nth-child(2) { animation-delay: 0.2s; }
+        .hero-content h1 .hword:nth-child(3) { animation-delay: 0.3s; }
+        .hero-content h1 .hword:nth-child(5) { animation-delay: 0.45s; }
         .hero-content h1 .hsub { display: inline-block; transition: transform 300ms ease, opacity 300ms ease; margin-left: 6px; animation: fadeInSlideUp 0.7s ease-out 0.5s forwards; opacity: 0; }
         .hero-content h1 .hsub:hover { transform: translateY(-6px); opacity: 1; }
 
@@ -305,97 +277,60 @@
         .panel {
             box-shadow: var(--glass-shadow); transition: 0.3s ease, transform 0.3s; position: relative;
             display: flex; flex-direction: column; z-index: 10;
+            padding: 40px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
         }
         .panel:hover { transform: translateY(-10px); border-color: var(--primary); }
         .panel-solid { background: #000; border: 1px solid #333; }
         [data-theme="light"] .panel-solid { background: #fff; border: 1px solid #eee; }
 
-        /* --- NEW: VIDEO REFLECTION WRAPPER --- */
+        /* --- VIDEO REFLECTION WRAPPER --- */
         .video-reflect-container {
-            position: relative;
-            margin-bottom: 20px;
-            /* The Reflection Effect */
+            position: relative; margin-bottom: 20px;
             -webkit-box-reflect: below 10px linear-gradient(transparent 60%, rgba(0,0,0,0.5));
             transform-style: preserve-3d;
         }
-
         .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
-        /* Small reflected video variant */
         .video-reflect-container.small { -webkit-box-reflect: below 8px linear-gradient(transparent 50%, rgba(0,0,0,0.45)); }
         .video-reflect-container.small .video-wrapper { width: 420px; height: 280px; padding-bottom: 0; margin: 0 auto; border-radius: 10px; }
         .video-reflect-container.small .video-wrapper iframe { width: 100%; height: 100%; }
 
-        /* Screen Glare Overlay */
         .screen-glare {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
-            pointer-events: none; z-index: 5;
-            border-radius: 12px;
+            pointer-events: none; z-index: 5; border-radius: 12px;
         }
 
-        /* --- NEW: GLASSMORPHIC IMAGES --- */
+        /* --- GLASSMORPHIC IMAGES --- */
         .glassmorphic-img-container {
-            position: relative;
-            width: 100%;
-            padding: 8px; /* Creates the border spacing */
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative; width: 100%; padding: 8px;
+            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); border-radius: 12px;
+            overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
-        .glassmorphic-img-container:hover {
-            transform: scale(1.02);
-            box-shadow: 0 15px 40px rgba(1, 169, 130, 0.2);
-            border-color: var(--primary);
-        }
-
-        .glassmorphic-img-container img {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 6px;
-            /* Slight desaturation to make the glass effect pop */
-            filter: grayscale(20%) contrast(110%);
-            transition: filter 0.3s ease;
-        }
-
-        .glassmorphic-img-container:hover img {
-            filter: grayscale(0%) contrast(100%);
-        }
-
-        /* Shine effect on image */
+        .glassmorphic-img-container:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(1, 169, 130, 0.2); border-color: var(--primary); }
+        .glassmorphic-img-container img { display: block; width: 100%; height: auto; border-radius: 6px; filter: grayscale(20%) contrast(110%); transition: filter 0.3s ease; }
+        .glassmorphic-img-container:hover img { filter: grayscale(0%) contrast(100%); }
         .glassmorphic-img-container::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%;
-            height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-25deg);
-            transition: 0.5s;
+            transform: skewX(-25deg); transition: 0.5s;
         }
+        .glassmorphic-img-container:hover::after { left: 150%; transition: 0.7s ease-in-out; }
 
-        .glassmorphic-img-container:hover::after {
-            left: 150%;
-            transition: 0.7s ease-in-out;
-        }
-
-        /* --- AUDIO TRIGGER BUTTON --- */
+        /* --- AUDIO TRIGGER --- */
         .audio-container {
             display: flex; align-items: center; justify-content: space-between;
             background: rgba(0,0,0,0.3); border: 1px solid var(--primary);
-            padding: 15px 20px; border-radius: 4px; margin: 20px 0;
-            transition: 0.3s;
+            padding: 15px 20px; border-radius: 4px; margin: 20px 0; transition: 0.3s;
         }
         .audio-container:hover { background: rgba(1, 169, 130, 0.05); }
-        
         .audio-info h5 { margin: 0; font-family: var(--font-code); color: var(--primary); font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
         .audio-info p { margin: 5px 0 0 0; font-size: 0.9rem; color: var(--text-muted); }
 
@@ -407,42 +342,13 @@
         }
         .audio-trigger:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px rgba(1, 169, 130, 0.4); }
         .audio-trigger.playing { background: #fff; color: #000; border-color: #fff; animation: pulse-white 1.5s infinite; }
-        
         @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
 
-        /* --- NEW: CANDIDATE SOCIAL BANNER --- */
-        .candidate-social-bar {
-            display: flex;
-            gap: 0;
-            background: var(--primary);
-            border-radius: 4px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(1, 169, 130, 0.4);
-            margin-top: 20px;
-        }
-        
-        .social-link {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 12px;
-            color: #fff;
-            text-decoration: none;
-            font-family: var(--font-code);
-            font-weight: 700;
-            font-size: 0.8rem;
-            text-transform: uppercase;
-            transition: background 0.3s;
-            border-right: 1px solid rgba(255,255,255,0.2);
-        }
-        
+        /* --- SOCIAL BANNER --- */
+        .candidate-social-bar { display: flex; gap: 0; background: var(--primary); border-radius: 4px; overflow: hidden; box-shadow: 0 5px 15px rgba(1, 169, 130, 0.4); margin-top: 20px; }
+        .social-link { flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px; color: #fff; text-decoration: none; font-family: var(--font-code); font-weight: 700; font-size: 0.8rem; text-transform: uppercase; transition: background 0.3s; border-right: 1px solid rgba(255,255,255,0.2); }
         .social-link:last-child { border-right: none; }
-        
-        .social-link svg {
-            width: 20px; height: 20px; fill: #fff; margin-right: 8px;
-        }
-
+        .social-link svg { width: 20px; height: 20px; fill: #fff; margin-right: 8px; }
         .social-link:hover { background: var(--primary-dark); }
 
         /* --- TEXT STYLES --- */
@@ -456,10 +362,8 @@
         .candidate-photo-box {
             width: 200px; height: 200px; border-radius: 50%; border: 4px solid var(--primary);
             box-shadow: 0 0 30px rgba(1, 169, 130, 0.3); display: flex; align-items: center; justify-content: center;
-            background: #000; overflow: hidden; transition: transform 0.3s ease;
-            padding: 5px; /* Spacing for glass effect */
-            background: rgba(255,255,255,0.05);
-            backdrop-filter: blur(10px);
+            background: #000; overflow: hidden; transition: transform 0.3s ease; padding: 5px;
+            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
         }
         .candidate-photo-box:hover { transform: scale(1.05); }
         .candidate-photo-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
@@ -493,10 +397,12 @@
         /* --- UI COMPONENTS --- */
         .header-bar { position: fixed; top: 0; left: 0; width: 100%; padding: 30px 80px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); z-index: 900; backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); }
         [data-theme="light"] .header-bar { background: rgba(255,255,255,0.9); border-bottom-color: rgba(0,0,0,0.05); }
+        
         .brand { font-family: var(--font-display); color: #fff; font-weight: 900; letter-spacing: 1px; display: flex; align-items: center; gap: 20px; font-size: 1rem; text-transform: uppercase; line-height: 1.2; }
         [data-theme="light"] .brand { color: var(--text-main); }
         .brand span { color: var(--primary); }
-        .theme-ui { position: fixed; top: 30px; right: 30px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #333; backdrop-filter: blur(10px); display: flex; gap: 10px; border-radius: 50px; }
+
+        .theme-ui { position: fixed; top: 20px; right: 30px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 10px; border: 1px solid #333; backdrop-filter: blur(10px); display: flex; gap: 10px; border-radius: 50px; }
         .theme-btn { background: transparent; border: 1px solid #555; color: #fff; padding: 8px 20px; font-family: var(--font-code); cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.75rem; border-radius: 20px; font-weight: 700; }
         .theme-btn:hover, .theme-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
 
@@ -505,10 +411,35 @@
         h3 { font-family: var(--font-display); color: var(--text-main); font-size: 1.6rem; margin-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
         [data-theme="light"] h3 { border-bottom-color: #eee; }
         p { color: var(--text-main); line-height: 1.8; margin-bottom: 25px; font-size: 1.1rem; }
-        
         .code-block { background: #1e1e1e; color: #d4d4d4; padding: 25px; border-radius: 12px; font-family: var(--font-code); font-size: 0.9rem; overflow-x: auto; margin: 20px 0; border-left: 5px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
-        /* --- RESPONSIVE --- */
+        /* TERMS AND CONDITIONS STYLES */
+        #terms {
+            background: #000;
+            padding: 80px 20px;
+            border-top: 1px solid var(--primary);
+        }
+        #terms h2 {
+            font-family: var(--font-code);
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 40px;
+        }
+        .terms-content {
+            max-width: 800px;
+            margin: 0 auto;
+            font-family: var(--font-code);
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.8;
+            column-count: 1;
+        }
+        @media (min-width: 1024px) {
+            .terms-content { column-count: 2; column-gap: 60px; }
+        }
+        .terms-content p { margin-bottom: 20px; }
+        .terms-content strong { color: var(--text-main); }
+
         @media (max-width: 1200px) {
             .grid-asym-1-1, .grid-asym-1-2, .grid-asym-2-1 { grid-template-columns: 1fr; }
             .hero-content h1 { font-size: 3rem; }
@@ -527,7 +458,7 @@
                 <input type="checkbox" id="entrance-check" aria-label="Initiate System Access">
                 <div class="button">
                     <span class="icon">
-                        <svg xml:space="preserve" viewBox="0 0 463 463" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M259.476,280.364V247.5c0-12.958-10.542-23.5-23.5-23.5s-23.5,10.542-23.5,23.5v29.672 c0,35.757-13.173,70.087-37.094,96.665l-32.981,36.646c-2.771,3.079-2.521,7.821,0.558,10.593c3.078,2.771,7.82,2.521,10.592-0.558 l32.981-36.646c26.403-29.338,40.944-67.231,40.944-106.7V247.5c0-4.687,3.813-8.5,8.5-8.5s8.5,3.813,8.5,8.5v32.864 c0,44.003-16.301,86.167-45.901,118.727l-32.149,35.364c-2.786,3.064-2.56,7.809,0.505,10.595c1.437,1.307,3.242,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l32.148-35.364C241.789,373.854,259.476,328.106,259.476,280.364z"></path> <path d="M291.476,247.5c0-30.603-24.897-55.5-55.5-55.5s-55.5,24.897-55.5,55.5v29.672c0,27.839-10.256,54.566-28.879,75.258 l-23.447,26.053c-2.771,3.079-2.521,7.821,0.558,10.593c3.079,2.771,7.82,2.519,10.592-0.558l23.447-26.053 c21.106-23.451,32.73-53.742,32.73-85.293V247.5c0-22.332,18.168-40.5,40.5-40.5c22.332,0,40.5,18.168,40.5,40.5v32.864 c0,51.979-19.256,101.789-54.223,140.252l-27.125,29.839c-2.787,3.064-2.56,7.809,0.504,10.595c1.437,1.307,3.242,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l27.126-29.839c37.481-41.23,58.123-94.622,58.123-150.342V247.5z"></path> <path d="M323.476,247.5c0-48.248-39.252-87.5-87.5-87.5s-87.5,39.252-87.5,87.5v29.672c0,19.92-7.339,39.045-20.665,53.851 l-21.112,23.458c-2.771,3.079-2.521,7.821,0.558,10.593c3.078,2.771,7.821,2.519,10.592-0.558l21.112-23.458 c15.809-17.565,24.515-40.254,24.515-63.886V247.5c0-39.977,32.523-72.5,72.5-72.5s72.5,32.523,72.5,72.5v32.864 c0,59.958-22.212,117.412-62.545,161.777l-7.507,8.258c-2.786,3.065-2.56,7.809,0.505,10.595c1.437,1.306,3.243,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l7.506-8.258c42.848-47.133,66.446-108.169,66.446-171.867V247.5z"></path> </g> </g></svg>
+                        <svg xml:space="preserve" viewBox="0 0 463 463" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M259.476,280.364V247.5c0-12.958-10.542-23.5-23.5-23.5s-23.5,10.542-23.5,23.5v29.672 c0,35.757-13.173,70.087-37.094,96.665l-32.981,36.646c-2.771,3.079-2.521,7.821,0.558,10.593c3.078,2.771,7.82,2.521,10.592-0.558 l32.981-36.646c26.403-29.338,40.944-67.231,40.944-106.7V247.5c0-4.687,3.813-8.5,8.5-8.5s8.5,3.813,8.5,8.5v32.864 c0,44.003-16.301,86.167-45.901,118.727l-32.149,35.364c-2.786,3.064-2.56,7.809,0.505,10.595c1.437,1.307,3.242,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l32.148-35.364C241.789,373.854,259.476,328.106,259.476,280.364z"></path> <path d="M291.476,247.5c0-30.603-24.897-55.5-55.5-55.5s-55.5,24.897-55.5,55.5v29.672c0,27.839-10.256,54.566-28.879,75.258 l-23.447,26.053c-2.771,3.079-2.521,7.821,0.558,10.593c3.079,2.771,7.82,2.519,10.592-0.558l23.447-26.053 c21.106-23.451,32.73-53.742,32.73-85.293V247.5c0-22.332,18.168-40.5,40.5-40.5c22.332,0,40.5,18.168,40.5,40.5v32.864 c0,51.979-19.256,101.789-54.223,140.252l-27.125,29.839c-2.787,3.064-2.56,7.809,0.504,10.595c1.437,1.307,3.243,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l27.126-29.839c37.481-41.23,58.123-94.622,58.123-150.342V247.5z"></path> <path d="M323.476,247.5c0-48.248-39.252-87.5-87.5-87.5s-87.5,39.252-87.5,87.5v29.672c0,19.92-7.339,39.045-20.665,53.851 l-21.112,23.458c-2.771,3.079-2.521,7.821,0.558,10.593c3.078,2.771,7.821,2.519,10.592-0.558l21.112-23.458 c15.809-17.565,24.515-40.254,24.515-63.886V247.5c0-39.977,32.523-72.5,72.5-72.5s72.5,32.523,72.5,72.5v32.864 c0,59.958-22.212,117.412-62.545,161.777l-7.507,8.258c-2.786,3.065-2.56,7.809,0.505,10.595c1.437,1.306,3.243,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l7.506-8.258c42.848-47.133,66.446-108.169,66.446-171.867V247.5z"></path> </g> </g></svg>
                     </span>
                 </div>
             </label>
@@ -539,7 +470,11 @@
 
     <!-- 2. UI HEADER -->
     <header class="header-bar">
-        <div class="brand">HEWLETT PACKARD <span style="color: var(--primary); font-size: 1.2rem;">//</span> <span style="color: var(--text-main);">ENTERPRISE</span></div>
+        <div class="brand">
+            <div style="width: 40px; height: 40px; border: 2px solid var(--primary); display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: 900; color: var(--primary); font-size: 0.8rem;">HPE</div>
+            HEWLETT PACKARD <span style="color: var(--primary); font-size: 1.2rem;">//</span> 
+            <span style="color: var(--text-main);">ENTERPRISE</span>
+        </div>
         <div class="theme-ui">
             <button class="theme-btn" onclick="setTheme('light', this)">Light</button>
             <button class="theme-btn active" onclick="setTheme('corporate', this)">Dark</button>
@@ -548,6 +483,9 @@
 
     <!-- HERO SECTION -->
     <section class="hero-header">
+        <!-- HERO MEDIA CONTAINER (Images Only) -->
+        <div id="hero-media-layer"></div>
+
         <div class="hero-text-backdrop"></div>
         <div class="hero-content">
             <div style="margin-bottom: 25px;">
@@ -573,14 +511,13 @@
 
     <main class="page-wrapper">
         
-        <!-- SECTION: CANDIDATE SNAPSHOT (PARALLAX: WORKSPACE) -->
+        <!-- SECTION: CANDIDATE SNAPSHOT -->
         <section id="details">
             <div class="grid-asym-1-2">
                 <!-- LEFT: Dossier Details -->
                 <article class="panel">
                     <div class="dossier-title">Operative Profile</div>
                     
-                    <!-- Candidate Photo -->
                     <div class="candidate-wrapper">
                         <div class="candidate-photo-box">
                             <img src="https://media.licdn.com/dms/image/v2/D4D03AQHNltVCxeh8ng/profile-displayphoto-scale_200_200/B4DZtziQeXI4AY-/0/1767169922313?e=1772064000&v=beta&t=BDy8j8MgVAFj2ZPOhhX3piZwbT1ti-j-1RwXbPRiR-0" alt="Candidate Portrait">
@@ -590,7 +527,6 @@
                             <p style="margin: 5px 0; color: var(--primary); font-weight: 700; font-size: 1.1rem;">Backend / Software Engineer</p>
                         </div>
                         
-                        <!-- NEW: SOCIAL BANNER -->
                         <div class="candidate-social-bar">
                             <a href="https://www.linkedin.com/in/tony-n-143420353/" target="_blank" class="social-link">
                                 <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
@@ -603,7 +539,6 @@
                         </div>
                     </div>
 
-                    <!-- Mission Objective -->
                     <div style="background: rgba(1, 169, 130, 0.1); border-left: 5px solid var(--primary); padding: 25px; border-radius: 0 12px 12px 0; margin-bottom: 30px;">
                         <h4 style="color: var(--primary); margin-bottom: 10px; font-family: var(--font-display); font-size: 1.1rem; text-transform: uppercase;">Mission Objective</h4>
                         <p style="margin:0; font-size: 1rem;">
@@ -611,7 +546,7 @@
                         </p>
                     </div>
 
-                    <!-- AUDIO LOG 1 -->
+                    <!-- AUDIO CONTAINER 1 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>Mission Briefing</h5>
@@ -623,7 +558,6 @@
                         </button>
                     </div>
 
-                    <!-- Stats -->
                     <div class="info-grid">
                         <div>
                             <span class="info-label">Platform</span>
@@ -646,7 +580,6 @@
 
                 <!-- RIGHT: STACKED CARD & VIDEO -->
                 <div style="display: flex; flex-direction: column; gap: 40px;">
-                    <!-- 3D CARD -->
                     <div class="parent">
                         <div class="card" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.5">
                             <div class="logo">
@@ -672,14 +605,10 @@
                         </div>
                     </div>
 
-                    <!-- VIDEO WITH REFLECTION (YT Video Under Green Banner) -->
                     <div class="panel" style="padding: 20px;height: 400px ; width: 600px; align-self: center; display: flex; flex-direction: column; align-items: center;">
                         <h3 style="font-size: 1rem; border: none; padding: 0; margin-bottom: 20px; text-align: center;">System Explainer</h3>
-                        
-                        <!-- NEW: Small Reflection Wrapper (YouTube) -->
                         <div class="video-reflect-container small">
                             <div class="video-wrapper">
-                                <!-- Small YouTube Embed (reflected via -webkit-box-reflect) -->
                                 <iframe src="https://youtu.be/3zwMiJFDcGs" title="HPE Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                                 <div class="screen-glare"></div>
                             </div>
@@ -689,7 +618,7 @@
             </div>
         </section>
 
-        <!-- PHASES SECTION (PARALLAX: STRATEGY) -->
+        <!-- PHASES SECTION -->
         <section id="phases">
             <h2 style="text-align: center; margin-bottom: 80px;">Operational Phases</h2>
 
@@ -700,7 +629,7 @@
                     <p>Every empire is built on a blueprint. Before writing a single line of Java, we needed to understand the landscape.</p>
                     <p><strong>The Strategy:</strong> We analyzed the business need to manage employee records efficiently. We defined the data schema—ID, Name, Email, Title—and mapped out the REST endpoints (POST/GET) required to interface with the system. A three-layer architecture (Controller → Service → Model) was proposed to ensure modularity.</p>
                     
-                    <!-- AUDIO LOG 2 -->
+                    <!-- AUDIO CONTAINER 2 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>Architectural Intent</h5>
@@ -720,7 +649,6 @@
                     </ul>
                 </article>
                 
-                <!-- NEW: STAND IN IMAGE (ARCHITECTURE) -->
                 <div class="glassmorphic-img-container">
                     <img src="https://picsum.photos/seed/architecture/600/400" alt="System Architecture Blueprint">
                 </div>
@@ -729,7 +657,6 @@
             <!-- Phase 2 -->
             <div class="grid-asym-1-2" style="margin-bottom: 100px;">
                 <div class="panel panel-solid" style="padding: 0; overflow: hidden; border: none; box-shadow: var(--glass-shadow);">
-                    <!-- VIDEO WITH REFLECTION -->
                     <div class="video-reflect-container" style="margin: 0;">
                         <div class="video-wrapper">
                             <iframe width="560" height="315" src="https://www.youtube.com/embed/8aGhZQkoFbQ?si=456" title="System Architecture Explainer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -747,7 +674,7 @@
                     <p>With the blueprint finalized, construction commenced. This is where abstract requirements transformed into tangible logic.</p>
                     <p>We implemented the <code>Employee</code> class with strict encapsulation—private fields accessed only via getters and setters. The <code>EmployeeManager</code> was deployed to handle in-memory data, ensuring the application could process requests in real-time. We configured JSON parsing for data exchange and established HTTP status codes (200 OK, 201 Created) for proper client communication.</p>
                     
-                    <!-- AUDIO LOG 3 -->
+                    <!-- AUDIO CONTAINER 3 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>Development Log</h5>
@@ -774,7 +701,7 @@
                     <p>Robustness is defined by failure, or lack thereof. The final phase was a stress test of our logic.</p>
                     <p>Automated tests were initialized using <code>@BeforeEach</code> to ensure a clean slate for every trial. We asserted that adding an employee increased the list size by exactly one. We verified the existence of all critical fields (ID, Name, Email, Title). The result was comprehensive coverage with six passing tests, proving the system's integrity.</p>
 
-                    <!-- AUDIO LOG 4 -->
+                    <!-- AUDIO CONTAINER 4 -->
                     <div class="audio-container">
                         <div class="audio-info">
                             <h5>QA Results</h5>
@@ -787,10 +714,8 @@
                     </div>
                 </article>
                 
-                <!-- NEW: STAND IN IMAGE (SERVER/PASSED) -->
                 <div class="glassmorphic-img-container">
                     <img src="https://picsum.photos/seed/serverroom/600/400" alt="Server Verification Success">
-                    <!-- Optional overlay text -->
                     <div style="position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.7); color: var(--primary); padding: 5px 10px; font-family: var(--font-code); font-weight: bold; font-size: 0.8rem; backdrop-filter: blur(4px); border-radius: 4px;">
                         STATUS: VERIFIED
                     </div>
@@ -798,7 +723,7 @@
             </div>
         </section>
 
-        <!-- TECHNICAL GUIDE (PARALLAX: DATA) -->
+        <!-- TECHNICAL GUIDE -->
         <section id="guide">
             <h2 style="margin-bottom: 60px;">Dynamic Data Strategy</h2>
             
@@ -821,7 +746,7 @@
                 <article class="panel">
                     <h3>Code Implementation</h3>
                     
-                    <!-- AUDIO LOG 5 -->
+                    <!-- AUDIO CONTAINER 5 -->
                     <div class="audio-container" style="margin-bottom: 20px;">
                         <div class="audio-info">
                             <h5>Code Walkthrough</h5>
@@ -852,7 +777,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
         </section>
 
         <!-- ======================================================= -->
-        <!-- NEW SECTION 4: ENHANCED MULTI-SOURCE LIVE CYBER MAGAZINE -->
+        <!-- SECTION 4: ENHANCED MULTI-SOURCE LIVE CYBER MAGAZINE -->
         <!-- ======================================================= -->
         <section id="section4">
 
@@ -866,7 +791,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     --cyber-black: #050505;
                     --glass-bg: rgba(10, 20, 20, 0.6);
                     --glass-border: rgba(0, 255, 157, 0.2);
-                    --card-bg: rgba(10, 15, 15, 0.85);
+                    --card-bg: rgba(10, 15, 15, 0.95);
                 }
 
                 #section4 {
@@ -977,9 +902,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     color: #888;
                 }
 
-                #section4 .s4-refresh-status {
-                    display: flex; align-items: center; gap: 10px;
-                }
+                #section4 .s4-refresh-status { display: flex; align-items: center; gap: 10px; }
                 #section4 .s4-live-dot {
                     width: 8px; height: 8px;
                     background: #ff3333;
@@ -1001,28 +924,49 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     perspective: 2000px;
                 }
 
-                /* --- CARD 3D CONTAINER --- */
+                /* --- CARD 3D FLIP CONTAINER --- */
                 #section4 .s4-card-wrap {
                     position: relative;
                     height: 600px;
-                    transform-style: preserve-3d;
-                    transform: translateZ(0); /* Hardware accel */
+                    /* Vanilla-Tilt applies to this wrapper */
                 }
 
-                #section4 .s4-card {
+                #section4 .s4-card-inner {
                     position: relative;
                     width: 100%;
                     height: 100%;
-                    border-radius: 20px;
-                    background: var(--card-bg);
-                    border: 1px solid var(--glass-border);
-                    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+                    text-align: center;
+                    transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                     transform-style: preserve-3d;
-                    transition: transform 0.1s ease-out; /* Fast for JS tilt */
                     cursor: pointer;
+                    border-radius: 20px;
+                    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+                }
+
+                /* Class added to trigger flip */
+                #section4 .s4-card-wrap.is-flipped .s4-card-inner {
+                    transform: rotateY(180deg);
+                }
+
+                /* Common Face Styles */
+                #section4 .s4-front, #section4 .s4-back {
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    -webkit-backface-visibility: hidden; /* Safari */
+                    backface-visibility: hidden;
+                    border-radius: 20px;
                     overflow: hidden;
                 }
-                
+
+                /* FRONT FACE */
+                #section4 .s4-front {
+                    background: var(--card-bg);
+                    border: 1px solid var(--glass-border);
+                    display: flex;
+                    flex-direction: column;
+                }
+
                 /* Video / Visual Layer */
                 #section4 .s4-visual-layer {
                     position: absolute;
@@ -1035,7 +979,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     opacity: 0.6;
                     transition: opacity 0.5s, transform 0.5s;
                 }
-                #section4 .s4-card:hover .s4-video-bg {
+                #section4 .s4-card-wrap:hover .s4-video-bg {
                     opacity: 0.8; transform: scale(1.05);
                 }
                 #section4 .s4-visual-overlay {
@@ -1045,7 +989,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     z-index: 2;
                 }
 
-                /* Content Layer */
+                /* Content Layer Front */
                 #section4 .s4-content-layer {
                     position: absolute;
                     inset: 0;
@@ -1055,6 +999,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     flex-direction: column;
                     justify-content: flex-end;
                     transform: translateZ(30px); /* 3D Pop */
+                    pointer-events: none; /* Let clicks pass to flip logic */
                 }
 
                 /* Tags */
@@ -1062,6 +1007,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     position: absolute; top: 25px; left: 25px; right: 25px;
                     display: flex; justify-content: space-between; align-items: flex-start;
                     transform: translateZ(40px);
+                    pointer-events: auto;
                 }
 
                 #section4 .s4-tag {
@@ -1091,6 +1037,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     margin-bottom: 12px;
                     color: #fff;
                     text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+                    text-align: left;
                 }
 
                 #section4 .s4-desc {
@@ -1103,9 +1050,10 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     -webkit-box-orient: vertical;
                     overflow: hidden;
                     mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+                    text-align: left;
                 }
 
-                /* Footer Actions */
+                /* Footer Actions Front */
                 #section4 .s4-actions {
                     display: flex;
                     justify-content: space-between;
@@ -1113,6 +1061,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     border-top: 1px solid rgba(255,255,255,0.1);
                     padding-top: 15px;
                     transform: translateZ(40px);
+                    pointer-events: auto;
                 }
 
                 #section4 .s4-source-pill {
@@ -1139,6 +1088,82 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     color: #000;
                     box-shadow: 0 0 15px var(--neon-green);
                 }
+
+                /* BACK FACE STYLES */
+                #section4 .s4-back {
+                    background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
+                    transform: rotateY(180deg);
+                    border: 1px solid var(--neon-blue);
+                    display: flex;
+                    flex-direction: column;
+                    padding: 30px;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                #section4 .s4-back-content {
+                    flex: 1;
+                    overflow-y: auto;
+                    width: 100%;
+                    margin-bottom: 20px;
+                    scrollbar-width: thin;
+                    scrollbar-color: var(--neon-blue) #111;
+                }
+                
+                #section4 .s4-back-content::-webkit-scrollbar { width: 6px; }
+                #section4 .s4-back-content::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 3px; }
+
+                #section4 .s4-back h3 {
+                    font-family: 'Orbitron', sans-serif;
+                    color: var(--neon-blue);
+                    margin-bottom: 15px;
+                    font-size: 1.2rem;
+                    border-bottom: 1px solid #333;
+                    padding-bottom: 10px;
+                }
+
+                #section4 .s4-back p {
+                    font-family: 'Rajdhani', sans-serif;
+                    font-size: 1rem;
+                    color: #ddd;
+                    line-height: 1.6;
+                    text-align: left;
+                }
+
+                #section4 .s4-back-actions {
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                #section4 .s4-btn-full {
+                    background: var(--neon-blue);
+                    color: #000;
+                    border: none;
+                    padding: 12px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    font-family: 'Orbitron', sans-serif;
+                    cursor: pointer;
+                    transition: 0.3s;
+                    text-decoration: none;
+                    text-align: center;
+                    border-radius: 4px;
+                }
+                #section4 .s4-btn-full:hover { background: #fff; box-shadow: 0 0 20px var(--neon-blue); }
+
+                #section4 .s4-btn-back {
+                    background: transparent;
+                    border: 1px solid #444;
+                    color: #888;
+                    padding: 10px;
+                    cursor: pointer;
+                    text-transform: uppercase;
+                    font-family: 'Share Tech Mono', monospace;
+                    transition: 0.3s;
+                }
+                #section4 .s4-btn-back:hover { border-color: #fff; color: #fff; }
 
                 /* Loading Skeleton */
                 #section4 .skeleton {
@@ -1275,7 +1300,7 @@ fetch(<span class="code-string">'/api/employees'</span>)
 
             <!-- NEWS GRID -->
             <div class="s4-grid" id="s4Grid">
-                <!-- Cards will be injected here -->
+                <!-- Cards injected via JS -->
             </div>
 
             <!-- MODAL -->
@@ -1323,20 +1348,21 @@ fetch(<span class="code-string">'/api/employees'</span>)
                         { name: "BBC TECH", url: "http://feeds.bbci.co.uk/news/technology/rss.xml" }
                     ];
 
+                    // NOTE: Using Online videos for Section 4 to ensure functionality without local setup
                     const VIDEOS = [
-                        "https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4", // Cyber City
-                        "https://videos.pexels.com/video-files/3129957/3129957-hd_1920_1080_25fps.mp4", // Data Stream
-                        "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",   // Matrix code style
-                        "https://videos.pexels.com/video-files/853789/853789-hd_1920_1080_30fps.mp4",   // Tech abstract
-                        "https://videos.pexels.com/video-files/5408401/5408401-hd_1920_1080_30fps.mp4",   // Server room
-                        "https://videos.pexels.com/video-files/3130570/3130570-hd_1920_1080_30fps.mp4"  // Network
+                        "https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4", 
+                        "https://videos.pexels.com/video-files/3129957/3129957-hd_1920_1080_25fps.mp4", 
+                        "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",   
+                        "https://videos.pexels.com/video-files/853789/853789-hd_1920_1080_30fps.mp4",   
+                        "https://videos.pexels.com/video-files/5408401/5408401-hd_1920_1080_30fps.mp4",   
+                        "https://videos.pexels.com/video-files/3130570/3130570-hd_1920_1080_30fps.mp4"  
                     ];
 
                     const grid = document.getElementById('s4Grid');
                     const modal = document.getElementById('s4Modal');
                     const ticker = document.getElementById('s4TickerContent');
 
-                    // --- CANVAS BACKGROUND EFFECT ---
+                    // --- CANVAS BACKGROUND ---
                     const canvas = document.getElementById('cyberCanvas');
                     const ctx = canvas.getContext('2d');
                     let width, height, particles = [];
@@ -1374,8 +1400,6 @@ fetch(<span class="code-string">'/api/employees'</span>)
 
                     function animateBg() {
                         ctx.clearRect(0, 0, width, height);
-                        
-                        // Draw connections
                         ctx.strokeStyle = 'rgba(0, 255, 157, 0.05)';
                         ctx.lineWidth =1;
                         for(let i=0; i<particles.length; i++) {
@@ -1403,18 +1427,20 @@ fetch(<span class="code-string">'/api/employees'</span>)
                         for(let i=0; i<6; i++) {
                             grid.innerHTML += `
                             <div class="s4-card-wrap">
-                                <div class="s4-card">
-                                    <div class="s4-visual-layer skeleton" style="height: 55%"></div>
-                                    <div class="s4-content-layer">
-                                        <div class="s4-meta-top">
-                                            <div class="skeleton" style="width: 80px; height: 20px"></div>
-                                            <div class="skeleton" style="width: 50px; height: 15px"></div>
-                                        </div>
-                                        <div class="skeleton" style="width: 100%; height: 60px; margin-bottom: 15px"></div>
-                                        <div class="skeleton" style="width: 100%; height: 40px; margin-bottom: 20px"></div>
-                                        <div class="s4-actions">
-                                            <div class="skeleton" style="width: 100px; height: 20px"></div>
-                                            <div class="skeleton" style="width: 80px; height: 30px"></div>
+                                <div class="s4-card-inner">
+                                    <div class="s4-front">
+                                        <div class="s4-visual-layer skeleton" style="height: 55%"></div>
+                                        <div class="s4-content-layer">
+                                            <div class="s4-meta-top">
+                                                <div class="skeleton" style="width: 80px; height: 20px"></div>
+                                                <div class="skeleton" style="width: 50px; height: 15px"></div>
+                                            </div>
+                                            <div class="skeleton" style="width: 100%; height: 60px; margin-bottom: 15px"></div>
+                                            <div class="skeleton" style="width: 100%; height: 40px; margin-bottom: 20px"></div>
+                                            <div class="s4-actions">
+                                                <div class="skeleton" style="width: 100px; height: 20px"></div>
+                                                <div class="skeleton" style="width: 80px; height: 30px"></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -1427,7 +1453,6 @@ fetch(<span class="code-string">'/api/employees'</span>)
                         renderSkeleton();
                         
                         try {
-                            // Pick 3 random feeds
                             const selected = FEEDS.sort(() => 0.5 - Math.random()).slice(0, 3);
                             
                             const promises = selected.map(feed => 
@@ -1444,13 +1469,11 @@ fetch(<span class="code-string">'/api/employees'</span>)
 
                             const results = await Promise.all(promises);
                             let allItems = results.flat();
-                            
-                            // Shuffle and limit
                             allItems.sort(() => 0.5 - Math.random());
                             
                             if(allItems.length === 0) throw new Error("No Data");
                             
-                            renderCards(allItems.slice(0, 8)); // Render top 8
+                            renderCards(allItems.slice(0, 8)); 
                             updateTicker(allItems.slice(0, 5));
                             
                         } catch (e) {
@@ -1461,53 +1484,89 @@ fetch(<span class="code-string">'/api/employees'</span>)
                         }
                     }
 
-                    // --- LOGIC: RENDER CARDS ---
+                    // --- LOGIC: RENDER CARDS (WITH FLIP) ---
                     function renderCards(items) {
                         grid.innerHTML = '';
                         
                         items.forEach((item, idx) => {
-                            // Date formatting
                             const date = new Date(item.pubDate);
                             const timeAgo = getTimeAgo(date);
                             
-                            // Description cleanup
                             let desc = item.description.replace(/<[^>]*>?/gm, '');
                             if(desc.length > 120) desc = desc.substring(0, 118) + '...';
                             
-                            // Assign video cyclically
                             const videoUrl = VIDEOS[idx % VIDEOS.length];
 
-                            const card = document.createElement('div');
-                            card.className = 's4-card-wrap';
-                            card.innerHTML = `
-                                <div class="s4-card" onmousemove="s4Tilt(event, this)" onmouseleave="s4ResetTilt(this)">
-                                    <div class="s4-visual-layer">
-                                        <video class="s4-video-bg" src="${videoUrl}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>
-                                        <div class="s4-visual-overlay"></div>
-                                    </div>
-                                    <div class="s4-content-layer">
-                                        <div class="s4-meta-top">
-                                            <div class="s4-tag">${item.author ? item.author.substring(0,10).toUpperCase() : 'NEWS'}</div>
-                                            <div class="s4-time">${timeAgo}</div>
+                            const cardWrap = document.createElement('div');
+                            cardWrap.className = 's4-card-wrap';
+                            
+                            // Vanilla Tilt applies to the WRAPPER. The inner card flips.
+                            cardWrap.setAttribute('data-tilt', '');
+                            cardWrap.setAttribute('data-tilt-max', '10');
+                            cardWrap.setAttribute('data-tilt-speed', '400');
+                            cardWrap.setAttribute('data-tilt-glare', '');
+                            cardWrap.setAttribute('data-tilt-max-glare', '0.2');
+
+                            // Inner HTML with Front and Back faces
+                            cardWrap.innerHTML = `
+                                <div class="s4-card-inner" id="card-inner-${idx}">
+                                    <!-- FRONT FACE -->
+                                    <div class="s4-front">
+                                        <div class="s4-visual-layer">
+                                            <video class="s4-video-bg" src="${videoUrl}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>
+                                            <div class="s4-visual-overlay"></div>
                                         </div>
-                                        <div class="s4-title">${item.title}</div>
-                                        <div class="s4-desc">${desc}</div>
-                                        <div class="s4-actions">
-                                            <div class="s4-source-pill">
-                                                <div class="s4-source-dot"></div> ${item.sourceName.toUpperCase()}
+                                        <div class="s4-content-layer">
+                                            <div class="s4-meta-top">
+                                                <div class="s4-tag">${item.author ? item.author.substring(0,10).toUpperCase() : 'NEWS'}</div>
+                                                <div class="s4-time">${timeAgo}</div>
                                             </div>
-                                            <button class="s4-btn-expand" onclick="s4OpenModal('${videoUrl}', '${encodeURIComponent(item.title)}', '${encodeURIComponent(desc)}', '${item.link}', '${item.sourceName}', '${item.pubDate}')">
-                                                ACCESS <span style="font-size:1.2rem">&rarr;</span>
-                                            </button>
+                                            <div class="s4-title">${item.title}</div>
+                                            <div class="s4-desc">${desc}</div>
+                                            <div class="s4-actions">
+                                                <div class="s4-source-pill">
+                                                    <div class="s4-source-dot"></div> ${item.sourceName.toUpperCase()}
+                                                </div>
+                                                <!-- TRIGGERS FLIP -->
+                                                <button class="s4-btn-expand" onclick="toggleFlip(event, ${idx})">
+                                                    ACCESS <span style="font-size:1.2rem">&rarr;</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- BACK FACE -->
+                                    <div class="s4-back">
+                                        <div class="s4-back-content">
+                                            <h3>DECRYPTED DATA</h3>
+                                            <p>${item.description.replace(/<[^>]*>?/gm, '')}</p>
+                                        </div>
+                                        <div class="s4-back-actions">
+                                            <a href="${item.link}" target="_blank" class="s4-btn-full">READ FULL DATA</a>
+                                            <button class="s4-btn-back" onclick="toggleFlip(event, ${idx})">RETURN TO FEED</button>
                                         </div>
                                     </div>
                                 </div>
                             `;
-                            grid.appendChild(card);
+                            grid.appendChild(cardWrap);
+                        });
+                        
+                        // Re-init Vanilla Tilt for new elements
+                        VanillaTilt.init(document.querySelectorAll(".s4-card-wrap"), {
+                            max: 15,
+                            speed: 400,
+                            glare: true,
+                            "max-glare": 0.2,
                         });
                     }
 
-                    // --- HELPER: TIME AGO ---
+                    // --- FLIP FUNCTION ---
+                    window.toggleFlip = function(e, idx) {
+                        e.stopPropagation(); // Prevent tilt interference
+                        const cardWrap = document.querySelectorAll('.s4-card-wrap')[idx];
+                        cardWrap.classList.toggle('is-flipped');
+                    }
+
                     function getTimeAgo(date) {
                         const seconds = Math.floor((new Date() - date) / 1000);
                         let interval = seconds / 31536000;
@@ -1526,25 +1585,6 @@ fetch(<span class="code-string">'/api/employees'</span>)
                     function updateTicker(items) {
                         const text = items.map(i => ` // ${i.title.toUpperCase()} // `).join(" ");
                         ticker.innerText = text + " // SYSTEM SECURE // WAITING FOR NEW TRANSMISSION...";
-                    }
-
-                    // --- INTERACTION: 3D TILT ---
-                    window.s4Tilt = function(e, card) {
-                        const rect = card.getBoundingClientRect();
-                        const x = e.clientX - rect.left;
-                        const y = e.clientY - rect.top;
-                        
-                        const centerX = rect.width / 2;
-                        const centerY = rect.height / 2;
-                        
-                        const rotateX = ((y - centerY) / centerY) * -5; // Max 5deg rotation
-                        const rotateY = ((x - centerX) / centerX) * 5;
-
-                        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                    }
-
-                    window.s4ResetTilt = function(card) {
-                        card.style.transform = `perspective(1000px) rotateX(0) rotateY(0)`;
                     }
 
                     // --- MODAL LOGIC ---
@@ -1583,7 +1623,32 @@ fetch(<span class="code-string">'/api/employees'</span>)
                 })();
             </script>
         </section>
-        <!-- END SECTION 4 -->
+
+        <!-- ======================================================= -->
+        <!-- SECTION 5: TERMS AND CONDITIONS -->
+        <!-- ======================================================= -->
+        <section id="terms">
+            <h2 style="text-align: center; color: var(--primary);">SYSTEM TERMS & CONDITIONS</h2>
+            <div class="terms-content">
+                <p><strong>1. ACCEPTANCE OF TERMS</strong><br>
+                By accessing this Technical Dossier ("The System"), you acknowledge that you have read, understood, and agree to be bound by these Terms and Conditions ("The Protocol"). If you do not agree with these terms, you must discontinue use of the system immediately.</p>
+                
+                <p><strong>2. INTELLECTUAL PROPERTY</strong><br>
+                All content, including but not limited to text, graphics, logos, images, and software, is the property of Hewlett Packard Enterprise or the content providers and is protected by international copyright laws. The simulation data generated is for portfolio demonstration purposes only.</p>
+
+                <p><strong>3. USER CONDUCT</strong><br>
+                You agree not to use the system for any unlawful purpose, to solicit others to perform or participate in any unlawful acts, or to violate any international, federal, provincial, or state regulations, rules, laws, or local ordinances.</p>
+
+                <p><strong>4. DATA PRIVACY</strong><br>
+                Your use of the system is subject to our Privacy Policy. By using this system, you consent to the collection and use of information as detailed in our policy. We do not store personal employee data on this public-facing interface.</p>
+
+                <p><strong>5. DISCLAIMER OF WARRANTIES</strong><br>
+                The materials on HPE's web site are provided "as is". HPE makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties, including without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.</p>
+
+                <p><strong>6. LIMITATIONS</strong><br>
+                In no event shall HPE or its suppliers be liable for any damages (including, without limitation, damages for loss of data or profit, or due to business interruption,) arising out of the use or inability to use the materials on HPE's Internet site, even if HPE or an authorized representative has been notified orally or in writing of the possibility of such damage.</p>
+            </div>
+        </section>
 
         <footer style="text-align: center; padding: 100px 0; margin-top: 100px; color: var(--text-muted); font-family: var(--font-code); font-size: 0.9rem; border-top: 1px solid rgba(255,255,255,0.1);">
             <p>© 2026 HEWLETT PACKARD ENTERPRISE // EXTREME TECHNICAL DOSSIER</p>
@@ -1592,79 +1657,76 @@ fetch(<span class="code-string">'/api/employees'</span>)
     </main>
 
     <script>
-        // --- 1. SLIDESHOW CONFIG & HERO SCROLL LOGIC ---
+        // --- 1. HERO SLIDESHOW LOGIC (IMAGES ONLY) ---
         
-        // UPDATED: High-quality Initialization & Hero Images matching HPE/Case Study Vibe
-        const OFFICE_IMAGES = [
-            // HPE Green Lake Style (Server Room with Green Lights)
-            'https://www.pickardchilton.com/sites/default/files/styles/gallery_image/public/1812.054.jpg?itok=pfXF4bEq',
-            // Abstract Data Center
-            'https://www.mmoser.com/wp-content/uploads/2023/09/hpe-sydney-reception-1200x675.jpg',
-            // Modern Corporate Tech
-            'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1920',
-            // Clean Server Room
-            'https://www.reuters.com/resizer/v2/PMVF2HCJWVP65MYYETSW3ZRYEQ.jpg?auth=ab168023ac65ed641a88a5c66c45e72ca9601ecac14458a66747dfda6e646333&width=1920&quality=80',
-            // Fiber Optics / Connectivity
-            'https://arktura.com/wp-content/uploads/2023/02/Arktura-Vapor-Pixel-HPE-Houston-TX_WEB_2-scaled.jpg'
+        // High quality tech/server images
+        const HERO_IMAGES = [
+            'https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg', 
+            'https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg',
+            'https://images.pexels.com/photos/214574/pexels-photo-214574.jpeg',
+            'https://images.pexels.com/photos/280232/pexels-photo-280232.jpeg'
         ];
 
-        // Random hero office image on load
-        function setRandomHeroImage() {
-            const randomImg = OFFICE_IMAGES[Math.floor(Math.random() * OFFICE_IMAGES.length)];
-            const heroHeader = document.querySelector('.hero-header');
-            if (heroHeader) {
-                heroHeader.style.backgroundImage = `url('${randomImg}')`;
+        let heroIndex = 0;
+        const heroContainer = document.getElementById('hero-media-layer');
+
+        function initHeroSlideshow() {
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                // If reduced motion, just show the first image statically
+                const img = document.createElement('img');
+                img.src = HERO_IMAGES[0];
+                img.className = 'hero-bg-element active';
+                img.alt = "Hero Background";
+                heroContainer.appendChild(img);
+                return;
             }
-        }
 
-        // Slideshow Logic for Hero
-        let currentHeroIndex = 0;
-        function startHeroSlideshow() {
-            // Skip if user prefers reduced motion
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+            // Preload and append all elements
+            HERO_IMAGES.forEach((src, idx) => {
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = `Hero Slide ${idx+1}`;
+                img.className = 'hero-bg-element';
+                heroContainer.appendChild(img);
+            });
 
-            const heroHeader = document.querySelector('.hero-header');
-            if(!heroHeader) return;
-
-            // Set initial random image
-            setRandomHeroImage();
+            // Start with index 0 active
+            const elements = document.querySelectorAll('.hero-bg-element');
+            if(elements.length > 0) elements[0].classList.add('active');
 
             setInterval(() => {
-                currentHeroIndex = (currentHeroIndex + 1) % OFFICE_IMAGES.length;
-                const nextImg = OFFICE_IMAGES[currentHeroIndex];
+                // Hide current
+                elements[heroIndex].classList.remove('active');
                 
-                // Preload image to prevent flash
-                const img = new Image();
-                img.src = nextImg;
-                img.onload = () => {
-                    heroHeader.style.backgroundImage = `url('${nextImg}')`;
-                };
-            }, 6000); // Change every 6 seconds
+                // Next
+                heroIndex = (heroIndex + 1) % elements.length;
+                
+                // Show next
+                elements[heroIndex].classList.add('active');
+            }, 6000);
         }
-
-        // UPDATED: Initialization Slideshow Images (Entrance)
-        const slides = [
-            'https://www.investopedia.com/thmb/5rY--DU-wAibrkAhTt4ajU-SwBU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-14457891641-69e0c37d50da4695803c7ff07920f1fb.jpg', // Green Data Center
-            'https://vemi.com.au/wp-content/uploads/2023/05/mmoser_HPE9713_V01.02_LR.jpg', // Tech Cables
-            'https://www.pickardchilton.com/sites/default/files/styles/gallery_image/public/1812.054.jpg?itok=pfXF4bEq'  // Digital Blue
-        ];
-
-        const slideshowContainer = document.getElementById('intro-slideshow');
-        slides.forEach((src, index) => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = "HPE Data Center Background " + (index + 1);
-            img.className = `slide-img ${index === 0 ? 'active' : ''}`;
-            slideshowContainer.appendChild(img);
-        });
-
-        const slideElements = document.querySelectorAll('.slide-img');
 
         // --- 2. ENTRANCE LOGIC ---
         const entranceCheck = document.getElementById('entrance-check');
         const loader = document.getElementById('intro-loader');
+        const slideshowContainer = document.getElementById('intro-slideshow');
         const body = document.body;
         const pageWrapper = document.querySelector('.page-wrapper');
+
+        // Init Slideshow Images
+        const slides = [
+            'https://www.investopedia.com/thmb/5rY--DU-wAibrkAhTt4ajU-SwBU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-14457891641-69e0c37d50da4695803c7ff07920f1fb.jpg',
+            'https://vemi.com.au/wp-content/uploads/2023/05/mmoser_HPE9713_V01.02_LR.jpg',
+            'https://www.pickardchilton.com/sites/default/files/styles/gallery_image/public/1812.054.jpg?itok=pfXF4bEq'
+        ];
+        slides.forEach((src, index) => {
+            const img = document.createElement('img');
+            img.src = src;
+            img.alt = "HPE Data Center " + (index + 1);
+            img.className = `slide-img ${index === 0 ? 'active' : ''}`;
+            slideshowContainer.appendChild(img);
+        });
+        const slideElements = document.querySelectorAll('.slide-img');
 
         entranceCheck.addEventListener('change', () => {
             if(entranceCheck.checked) {
@@ -1693,8 +1755,8 @@ fetch(<span class="code-string">'/api/employees'</span>)
                         body.style.overflowY = 'auto';
                         pageWrapper.style.opacity = '1';
                         
-                        // Start Hero Slideshow after entrance
-                        startHeroSlideshow();
+                        // Start Hero Slideshow
+                        initHeroSlideshow();
                     }, 3200);
                     
                 }, 800);
@@ -1713,24 +1775,19 @@ fetch(<span class="code-string">'/api/employees'</span>)
             btn.classList.add('active');
         }
 
-        // --- 4. VANILLA-TILT (Respecting Accessibility) ---
-        document.addEventListener("DOMContentLoaded", () => {
-            const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // --- 4. AUDIO PLAYER LOGIC ---
+        // Map IDs to relative file paths
+        const AUDIO_FILES = {
+            'briefing': './assets/audio/briefing.mp3',
+            'arch': './assets/audio/arch.mp3',
+            'dev': './assets/audio/dev.mp3',
+            'qa': './assets/audio/qa.mp3',
+            'code': './assets/audio/code.mp3'
+        };
 
-            if (!prefersReducedMotion) {
-                VanillaTilt.init(document.querySelectorAll(".card"), {
-                    max: 25,
-                    speed: 400,
-                    glare: true,
-                    "max-glare": 0.5,
-                    scale: 1.05
-                });
-            }
-        });
+        let currentAudio = null;
 
-        // --- 5. AUDIO PLAYER LOGIC ---
         function playAudio(btn, id) {
-            // Toggle UI state
             const isPlaying = btn.classList.contains('playing');
             
             // Reset all buttons
@@ -1739,16 +1796,48 @@ fetch(<span class="code-string">'/api/employees'</span>)
                 b.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> PLAY LOG';
             });
 
+            // Stop any currently playing audio
+            if(currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+            }
+
             if (!isPlaying) {
-                // Set this button to playing
-                btn.classList.add('playing');
-                btn.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> PLAYING...';
-                
-                console.log(`Playing audio log: ${id}`);
-                // INSERT YOUR ACTUAL AUDIO LOGIC HERE
-                // e.g., new Audio('path/to/file.mp3').play();
+                const audioSrc = AUDIO_FILES[id];
+                if(audioSrc) {
+                    // Create new Audio object
+                    currentAudio = new Audio(audioSrc);
+                    
+                    // Play
+                    currentAudio.play().catch(e => console.error("Audio play failed (check path):", e));
+
+                    // Update button UI
+                    btn.classList.add('playing');
+                    btn.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> PLAYING...';
+
+                    // Reset button when audio ends
+                    currentAudio.onended = () => {
+                        btn.classList.remove('playing');
+                        btn.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> PLAY LOG';
+                        currentAudio = null;
+                    };
+                }
             }
         }
     </script>
+    <script
+  id="retell-widget"
+  src="https://dashboard.retellai.com/retell-widget.js"
+  type="module"
+  data-public-key="public_key_88bf04dfa7152488a8776"
+  data-agent-id="agent_1c8f2d0dd5c875723cb1d7848b"
+  data-agent-version="latest"
+  data-title="Talk with HPE AI"
+  data-color="#1D70B8"
+  data-voice-enabled="true"
+  data-auto-open="false"
+  data-show-ai-popup="true"
+  data-popup-message="Click to talk to our Holly ai assistant"
+></script>
 </body> 
 </html>
