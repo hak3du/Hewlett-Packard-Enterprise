@@ -1,1840 +1,671 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="corporate">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>HPE Software Engineering | Extreme Technical Dossier</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HPE | Edge-to-Cloud Architecture</title>
     
-    <!-- SEO & METADATA -->
-    <meta name="description" content="Extreme Technical Dossier: A comprehensive, narrative-driven record of HPE Backend Engineering simulation. Translating business requirements into a functional RESTful web service using Java Spring Boot.">
-    <meta name="keywords" content="HPE, Software Engineering, Backend, Java, Spring Boot, REST API, Technical Dossier, Case Study">
-    <meta name="author" content="HPE Candidate">
-    <meta name="robots" content="index, follow">
-    
-    <!-- OPEN GRAPH -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="HPE Software Engineering | Extreme Technical Dossier">
-    <meta property="og:description" content="A narrative-driven breakdown of the Backend Engineering simulation.">
-    <meta property="og:image" content="https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg">
-    <meta name="twitter:card" content="summary_large_image">
-
-    <!-- PRECONNECT -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&family=Orbitron:wght@400;500;700;900&family=Roboto+Mono:wght@300;400;500;700&family=Syncopate:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    
-    <!-- Vanilla-Tilt.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
-    
-    <!-- SCHEMA.ORG -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareSourceCode",
-      "name": "HPE Employee Management REST API",
-      "description": "A narrative-driven record of building a RESTful backend web service using Java Spring Boot.",
-      "author": { "@type": "Person", "name": "HPE Candidate" },
-      "programmingLanguage": "Java",
-      "applicationCategory": "Backend Application"
-    }
-    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     
     <style>
-        /* --- 1. CORE VARIABLES & THEMES --- */
         :root {
-            --bg-body: #050505; 
-            --text-main: #ffffff; 
-            --text-muted: #a0aec0;
-            --primary: #01A982; 
-            --primary-dark: #007A5E;
-            --secondary: #ffffff;
-            --glass-bg: rgba(20, 20, 25, 0.9);
-            --glass-border: rgba(255, 255, 255, 0.15);
-            --glass-shadow: 0 20px 50px rgba(0,0,0,0.6);
-            --glass-blur: 20px;
-            --font-display: 'Orbitron', sans-serif;
-            --font-body: 'Montserrat', sans-serif;
-            --font-code: 'Roboto Mono', monospace;
-            --clip-panel: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
-            --border-radius: 4px; 
+            /* Brand Colors */
+            --hpe-green: #01A982;
+            --hpe-green-dark: #008c6c;
+            --bg-dark: #0f1215;
+            --bg-card: rgba(30, 35, 45, 0.6);
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            
+            /* Motion & Transitions */
+            --ease-elastic: cubic-bezier(0.16, 1, 0.3, 1); 
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1); 
         }
 
-        [data-theme="light"] {
-            --bg-body: #F4F6F8; 
-            --text-main: #1A202C; 
-            --text-muted: #5A6B7C;
-            --primary: #01A982; 
-            --glass-bg: rgba(255, 255, 255, 0.9);
-            --glass-border: rgba(0, 0, 0, 0.1);
-            --glass-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* --- ACCESSIBILITY: PREFERS REDUCED MOTION --- */
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-            .hero-header { background-attachment: scroll !important; }
-            .hero-content h1 .hword:hover { transform: none !important; }
-            .js-tilt-glare { display: none !important; }
-            .js-tilt { transform: none !important; }
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; scroll-behavior: smooth; }
-        
         body {
-            background: var(--bg-body); color: var(--text-main);
-            font-family: var(--font-body); overflow-x: hidden;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            /* Prevent scroll jumping during intro */
             overflow-y: hidden; 
-            transition: background 0.5s ease, color 0.5s ease;
-            line-height: 1.6;
         }
 
-        /* --- 2. CINEMATIC LOADER --- */
-        #intro-loader, #intro-slideshow {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 10000;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s;
-        }
-        #intro-slideshow { z-index: 9999; opacity: 0; pointer-events: none; }
-        #intro-slideshow.active { opacity: 1; pointer-events: auto; }
-
-        .slide-img {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: opacity 0.3s ease-in-out;
-        }
-        .slide-img.active { opacity: 1; }
-
-        .loading-text {
-            font-family: var(--font-code); color: var(--primary); letter-spacing: 5px;
-            font-size: clamp(0.8rem, 4vw, 1.2rem); margin-top: 30px; opacity: 0; text-transform: uppercase; font-weight: 700;
-            text-align: center;
-            padding: 0 20px;
+        body.loaded {
+            overflow-y: auto;
         }
 
-        .switch input { display: none; }
-        .button {
-            position: relative; background-image: linear-gradient(145deg, #1a1a1a, #2a2a2a);
-            border-radius: 50px; padding: 6px; border: 1px solid #333; outline: none;
-            box-shadow: 5px 5px 10px #000, -5px -5px 10px #333; cursor: pointer;
-            /* Responsive sizing for touch */
-            width: clamp(3.5rem, 12vw, 4.5rem); 
-            height: clamp(3.5rem, 12vw, 4.5rem); 
-            display: flex; align-items: center; justify-content: center;
-            transition: .3s ease-in-out; animation: pulse-check-light 2s infinite;
-            flex-shrink: 0;
-        }
-        @keyframes pulse-check-light { 0% { box-shadow: 0 0 0 0 rgba(1, 169, 130, 0.4); } 70% { box-shadow: 0 0 0 15px rgba(1, 169, 130, 0); } 100% { box-shadow: 0 0 0 0 rgba(1, 169, 130, 0); } }
-        .button .icon { width: 100%; height: 100%; display: inline-block; }
-        .button .icon svg { height: 60%; width: 60%; fill: #fff; transition: fill; } /* Scaled SVG for button */
-        .switch input:checked + .button { box-shadow: inset 5px 5px 10px #000, inset -5px -5px 10px #333; border-color: var(--primary); }
-        .switch input:checked + .button .icon svg { fill: #000; }
-
-        .initiate-dossier-btn {
-            padding: clamp(12px, 4vw, 18px) clamp(24px, 8vw, 50px);
-            background: linear-gradient(135deg, rgba(1,169,130,0.12), rgba(255,255,255,0.02));
-            color: #fff;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: 50px;
-            font-weight: 800;
-            cursor: pointer;
-            font-family: var(--font-display);
-            text-transform: uppercase;
-            font-size: clamp(0.8rem, 2vw, 1rem);
-            letter-spacing: 1px;
-            box-shadow: 0 8px 30px rgba(1,169,130,0.12);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: transform 0.18s ease, box-shadow 0.25s ease, background 0.25s ease;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            max-width: 300px;
-        }
-        .initiate-dossier-btn::before{
-            content: '';
-            position: absolute;
-            inset: 0;
-            border-radius: 50px;
+        /* --- ANIMATED INTRO OVERLAY --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             pointer-events: none;
-            background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-            mix-blend-mode: overlay;
         }
-        .initiate-dossier-btn:hover{
-            transform: translateY(-6px) scale(1.02);
-            box-shadow: 0 20px 40px rgba(1,169,130,0.24), 0 0 40px rgba(1,169,130,0.06);
-            background: linear-gradient(135deg, rgba(1,169,130,0.18), rgba(255,255,255,0.03));
-        }
-        .initiate-dossier-btn:active{ transform: translateY(-2px) scale(0.99); }
 
-        /* --- 3. LAYOUT & PARALLAX BACKGROUNDS --- */
-        .page-wrapper { max-width: 1800px; margin: 0 auto; padding: 0 clamp(15px, 5vw, 80px); position: relative; z-index: 10; opacity: 0; transition: opacity 1s ease; width: 100%; }
-        
-        section { 
-            min-height: auto; 
-            display: flex; flex-direction: column; justify-content: center; 
-            padding: clamp(40px, 10vw, 100px) 0; 
-            position: relative; 
-            background-size: cover; 
-            background-position: center; 
-            background-attachment: fixed;
-            transition: background-image 1s ease-in-out; 
+        .intro-curtain {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%;
+            background: var(--hpe-green);
+            z-index: 10000;
+            transition: height 1.2s cubic-bezier(0.77, 0, 0.175, 1);
         }
-        
-        /* Disable parallax on mobile for performance & layout stability */
-        @media (max-width: 768px) { section { background-attachment: scroll; min-height: auto; padding: clamp(30px, 8vw, 60px) 0; } }
 
-        /* HERO SECTION */
-        .hero-header {
-            width: 100%; min-height: 100vh; position: relative; display: flex;
-            align-items: center; justify-content: flex-start; 
-            background-color: #000; 
-            background-size: cover; background-position: center; background-attachment: fixed;
+        .intro-logo {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.8s ease;
+        }
+
+        /* --- HERO SECTION & SLIDESHOW --- */
+        .parallax-wrapper {
+            position: relative;
+            height: 100vh;
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Enable 3D context for smoother GPU rendering */
+            perspective: 1000px; 
         }
 
-        /* HERO DYNAMIC MEDIA LAYER */
-        #hero-media-layer {
+        /* Slideshow Background Layers */
+        .hero-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 110%;
+            background-size: cover;
+            background-position: center;
+            z-index: -3;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out; 
+            filter: brightness(0.4) saturate(1.1);
+            will-change: opacity, transform;
+        }
+
+        .hero-bg.active {
+            opacity: 1;
+        }
+
+        /* Video Texture Overlay */
+        .hero-video-overlay {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-        }
-        
-        .hero-bg-element {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: cover; opacity: 0; transition: opacity 1.5s ease-in-out;
-            pointer-events: none;
-        }
-        .hero-bg-element.active { opacity: 1; }
-
-        /* Details Parallax */
-        #details {
-            background-image: url('https://images.pexels.com/photos/577585/pexels-photo-577585.jpeg?auto=compress&cs=tinysrgb&w=1920');
-        }
-        #details::before { content: ''; position: absolute; inset: 0; background: rgba(5, 5, 5, 0.93); z-index: 1; }
-        [data-theme="light"] #details::before { background: rgba(244, 246, 248, 0.93); }
-
-        /* Phases Parallax */
-        #phases {
-            background-image: url('https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1920');
-        }
-        #phases::before { content: ''; position: absolute; inset: 0; background: rgba(5, 5, 5, 0.93); z-index: 1; }
-        [data-theme="light"] #phases::before { background: rgba(244, 246, 248, 0.93); }
-
-        /* Guide Parallax */
-        #guide {
-            background-image: url('https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920');
-        }
-        #guide::before { content: ''; position: absolute; inset: 0; background: rgba(5, 5, 5, 0.93); z-index: 1; }
-        [data-theme="light"] #guide::before { background: rgba(244, 246, 248, 0.93); }
-
-        .hero-text-backdrop {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to right, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
-            z-index: 2; pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative; z-index: 3; max-width: 900px;
-            padding-left: clamp(15px, 6vw, 60px); 
-            padding-right: 20px; /* Added right padding for mobile */
-            text-align: left; animation: slideUp 1s ease-out forwards;
-        }
-        
-        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes fadeInSlideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes fadeInScale { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-        .hero-content h1 {
-            font-family: var(--font-display); 
-            font-size: clamp(2rem, 8vw, 5rem); /* Increased mobile scaling */
-            line-height: 1.1;
-            margin-bottom: 20px; color: #fff; text-transform: uppercase; letter-spacing: -1px;
-            text-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        .hero-content h1 span { color: var(--primary); text-shadow: 0 0 20px rgba(1,169,130,0.6); }
-
-        .hero-content h1 .hword { display: inline-block; transition: transform 320ms cubic-bezier(.2,.9,.2,1), color 220ms ease, text-shadow 220ms ease; will-change: transform; cursor: default; animation: fadeInSlideUp 0.7s ease-out forwards; }
-        .hero-content h1 .hword::after { content: ''; display: block; height: 4px; background: linear-gradient(90deg, rgba(1,169,130,0.9), rgba(255,255,255,0.06)); width: 0%; border-radius: 4px; transition: width 360ms ease; margin-top: 8px; }
-        .hero-content h1 .hword:hover { transform: translateY(-8px) rotate(-1.5deg) scale(1.06); color: var(--primary); text-shadow: 0 12px 40px rgba(1,169,130,0.45); }
-        .hero-content h1 .hword:hover::after { width: 100%; }
-        
-        .hero-content h1 .hword:nth-child(1) { animation-delay: 0.1s; }
-        .hero-content h1 .hword:nth-child(2) { animation-delay: 0.2s; }
-        .hero-content h1 .hword:nth-child(3) { animation-delay: 0.3s; }
-        .hero-content h1 .hword:nth-child(5) { animation-delay: 0.45s; }
-        .hero-content h1 .hsub { display: inline-block; transition: transform 300ms ease, opacity 300ms ease; margin-left: 6px; animation: fadeInSlideUp 0.7s ease-out 0.5s forwards; opacity: 0; }
-        .hero-content h1 .hsub:hover { transform: translateY(-6px); opacity: 1; }
-
-        .hero-content p { animation: fadeInSlideUp 0.8s ease-out 0.65s forwards; opacity: 0; }
-        .hero-content > div { animation: fadeInScale 0.8s ease-out 0.75s forwards; opacity: 0; }
-        .hero-content p {
-            font-size: clamp(0.9rem, 2.5vw, 1.4rem); color: #e0e0e0; margin-bottom: 40px; max-width: 100%;
-            line-height: 1.6; font-weight: 500; text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-        }
-
-        /* --- GRID --- */
-        /* Responsive Grid Logic */
-        .grid-asym-1-2, .grid-asym-2-1, .grid-asym-1-1 { 
-            display: grid; 
-            gap: clamp(20px, 5vw, 80px); 
-            align-items: start; 
-            position: relative; 
-            z-index: 5; 
-            width: 100%;
-        }
-
-        .grid-asym-1-2 { grid-template-columns: 1fr; }
-        .grid-asym-2-1 { grid-template-columns: 1fr; }
-        .grid-asym-1-1 { grid-template-columns: 1fr; }
-
-        @media (min-width: 900px) {
-            .grid-asym-1-2 { grid-template-columns: 1fr 1fr; }
-            .grid-asym-2-1 { grid-template-columns: 1.5fr 1fr; }
-            .grid-asym-1-1 { grid-template-columns: 1fr 1fr; }
-        }
-        
-        /* --- PANELS --- */
-        .panel {
-            box-shadow: var(--glass-shadow); transition: 0.3s ease, transform 0.3s; position: relative;
-            display: flex; flex-direction: column; z-index: 10;
-            width: 100%;
-        }
-        .panel:hover { transform: translateY(-10px); border-color: var(--primary); }
-        .panel-solid { background: #000; border: 1px solid #333; }
-        [data-theme="light"] .panel-solid { background: #fff; border: 1px solid #eee; }
-
-        /* --- VIDEO REFLECTION WRAPPER --- */
-        .video-reflect-container {
-            position: relative; margin-bottom: 20px;
-            -webkit-box-reflect: below 10px linear-gradient(transparent 60%, rgba(0,0,0,0.5));
-            transform-style: preserve-3d;
-            width: 100%;
-            max-width: 100%; /* Ensure no overflow */
-        }
-        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; }
-        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-
-        .video-reflect-container.small { -webkit-box-reflect: below 8px linear-gradient(transparent 50%, rgba(0,0,0,0.45)); }
-        /* Responsive video container */
-        .video-reflect-container.small .video-wrapper { 
-            width: 100%; 
-            height: auto; 
-            padding-bottom: 56.25%; /* Force 16:9 aspect ratio */
-            margin: 0 auto; 
-            border-radius: 10px; 
-            max-width: 100%; /* Fill container on mobile */
-        }
-        @media (min-width: 600px) {
-            .video-reflect-container.small .video-wrapper { max-width: 600px; }
-        }
-        .video-reflect-container.small .video-wrapper iframe { width: 100%; height: 100%; }
-
-        .screen-glare {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%, rgba(255,255,255,0) 100%);
-            pointer-events: none; z-index: 5; border-radius: 12px;
-        }
-
-        /* --- GLASSMORPHIC IMAGES --- */
-        .glassmorphic-img-container {
-            position: relative; width: 100%; padding: 8px;
-            background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37); border-radius: 12px;
-            overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .glassmorphic-img-container:hover { transform: scale(1.02); box-shadow: 0 15px 40px rgba(1, 169, 130, 0.2); border-color: var(--primary); }
-        .glassmorphic-img-container img { display: block; width: 100%; height: auto; border-radius: 6px; filter: grayscale(20%) contrast(110%); transition: filter 0.3s ease; }
-        .glassmorphic-img-container:hover img { filter: grayscale(0%) contrast(100%); }
-        .glassmorphic-img-container::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-25deg); transition: 0.5s;
-        }
-        .glassmorphic-img-container:hover::after { left: 150%; transition: 0.7s ease-in-out; }
-
-        /* --- AUDIO TRIGGER --- */
-        .audio-container {
-            display: flex; flex-direction: row; align-items: center; justify-content: space-between;
-            background: rgba(0,0,0,0.3); border: 1px solid var(--primary);
-            padding: 15px 20px; border-radius: 4px; margin: 20px 0; transition: 0.3s;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-        .audio-container:hover { background: rgba(1, 169, 130, 0.05); }
-        .audio-info h5 { margin: 0; font-family: var(--font-code); color: var(--primary); font-size: 0.8rem; letter-spacing: 1px; text-transform: uppercase; }
-        .audio-info p { margin: 5px 0 0 0; font-size: 0.9rem; color: var(--text-muted); }
-
-        .audio-trigger {
-            background: transparent; border: 1px solid var(--primary); color: var(--primary);
-            padding: 8px 16px; font-family: var(--font-code); font-size: 0.75rem;
-            text-transform: uppercase; font-weight: 700; border-radius: 2px; cursor: pointer;
-            display: flex; align-items: center; gap: 10px; transition: 0.2s;
-            white-space: nowrap;
-        }
-        .audio-trigger:hover { background: var(--primary); color: #fff; box-shadow: 0 0 15px rgba(1, 169, 130, 0.4); }
-        .audio-trigger.playing { background: #fff; color: #000; border-color: #fff; animation: pulse-white 1.5s infinite; }
-        @keyframes pulse-white { 0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(255, 255, 255, 0); } 100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); } }
-
-        /* --- SOCIAL BANNER --- */
-        .candidate-social-bar { display: flex; gap: 0; background: var(--primary); border-radius: 4px; overflow: hidden; box-shadow: 0 5px 15px rgba(1, 169, 130, 0.4); margin-top: 20px; width: 100%; }
-        .social-link { flex: 1; display: flex; align-items: center; justify-content: center; padding: 12px 5px; color: #fff; text-decoration: none; font-family: var(--font-code); font-weight: 700; font-size: 0.65rem; text-transform: uppercase; transition: background 0.3s; border-right: 1px solid rgba(255,255,255,0.2); }
-        .social-link:last-child { border-right: none; }
-        .social-link svg { width: 18px; height: 18px; fill: #fff; margin-right: 5px; }
-        .social-link:hover { background: var(--primary-dark); }
-
-        /* --- TEXT STYLES --- */
-        .dossier-title { font-family: var(--font-display); color: var(--text-main); font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700; text-transform: uppercase; margin-bottom: 30px; border-bottom: 3px solid var(--primary); padding-bottom: 15px; display: inline-block; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .info-label { color: var(--text-muted); font-weight: 700; display: block; font-size: 0.7rem; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 1px;}
-        .info-value { color: var(--text-main); font-weight: 800; font-family: var(--font-code); font-size: clamp(0.9rem, 2vw, 1.3rem); }
-
-        /* --- CANDIDATE & 3D CARD --- */
-        .candidate-wrapper { display: flex; flex-direction: column; align-items: center; margin-bottom: 40px; position: relative; }
-        .candidate-photo-box {
-            width: clamp(100px, 25vw, 200px); 
-            height: clamp(100px, 25vw, 200px); 
-            border-radius: 50%; border: 4px solid var(--primary);
-            box-shadow: 0 0 30px rgba(1, 169, 130, 0.3); display: flex; align-items: center; justify-content: center;
-            background: #000; overflow: hidden; transition: transform 0.3s ease; padding: 5px;
-            background: rgba(255,255,255,0.05); backdrop-filter: blur(10px);
-        }
-        .candidate-photo-box:hover { transform: scale(1.05); }
-        .candidate-photo-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-        
-        /* Responsive 3D Card */
-        .parent { 
-            width: 100%; 
-            max-width: 100%; /* Mobile: fill width */
-            aspect-ratio: 360/380; /* Maintain aspect ratio */
-            perspective: 1000px; 
-            margin: 0 auto; 
-            height: auto;
-        }
-        @media (min-width: 400px) {
-             .parent { max-width: 360px; } /* Constrain on slightly larger screens */
-        }
-
-        .card { 
-            height: 100%; width: 100%; 
-            border-radius: 60px; background: linear-gradient(135deg, var(--primary) 0%, #004d40 100%); transform-style: preserve-3d; transform: translateZ(0); box-shadow: 0 25px 60px rgba(1, 169, 130, 0.4); 
-        }
-        .glass { transform-style: preserve-3d; position: absolute; inset: 2.7%; border-radius: 55px; border-top-right-radius: 100%; background: linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0.9) 100%); transform: translateZ(30px); border-left: 1px solid white; border-bottom: 1px solid white; }
-        .content { padding: 35% 18% 0 10%; transform: translateZ(40px); box-sizing: border-box; } /* Percentages for responsiveness */
-        .content .title { display: block; color: #fff; font-weight: 900; font-size: clamp(14px, 4.5vw, 24px); text-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .content .text { display: block; color: #fff; font-size: clamp(11px, 3.5vw, 16px); margin-top: 20px; opacity: 0.95; font-weight: 500; line-height: 1.4; }
-        .bottom { padding: 4% 4%; transform-style: preserve-3d; position: absolute; bottom: 7%; left: 7%; right: 7%; display: flex; align-items: center; justify-content: space-between; transform: translateZ(40px); }
-        
-        .logo { position: absolute; right: 0; top: 0; transform-style: preserve-3d; }
-        .logo .circle { display: block; position: absolute; aspect-ratio: 1; border-radius: 50%; top: 0; right: 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1); backdrop-filter: blur(5px); background: rgba(255,255,255,0.2); }
-        /* Relative sizing for logo circles */
-        .logo .circle1 { width: 50%; transform: translateZ(20px); top: 2.7%; right: 2.7%; }
-        .logo .circle2 { width: 41.6%; transform: translateZ(40px); top: 3.3%; right: 3.3%; backdrop-filter: blur(1px); }
-        .logo .circle3 { width: 33.3%; transform: translateZ(60px); top: 5.5%; right: 5.5%; }
-        .logo .circle4 { width: 25%; transform: translateZ(80px); top: 6.9%; right: 6.9%; }
-        .logo .circle5 { width: 16.6%; transform: translateZ(100px); top: 9.7%; right: 9.7%; display: grid; place-content: center; background: var(--primary); }
-        .logo .circle5 .svg { width: 60%; fill: #fff; }
-
-        .bottom .view-more { display: flex; align-items: center; width: 40%; justify-content: flex-end; transition: all 0.2s ease-in-out; }
-        .bottom .view-more .view-more-button { background: none; border: none; color: #fff; font-weight: 800; font-size: clamp(9px, 3vw, 13px); text-transform: uppercase; }
-        .bottom .view-more .svg { fill: none; stroke: #fff; stroke-width: 3px; max-height: 16px; }
-        .bottom .social-buttons-container { display: flex; gap: 12px; transform-style: preserve-3d; }
-        .bottom .social-buttons-container .social-button { width: clamp(25px, 8vw, 40px); aspect-ratio: 1; padding: 10px; background: rgba(255,255,255,0.2); border-radius: 50%; border: none; display: grid; place-content: center; backdrop-filter: blur(5px); transition: 0.3s; transform: translateZ(10px); }
-        .bottom .social-buttons-container .social-button:hover { background: #fff; transform: translateZ(20px) scale(1.1); }
-        .bottom .social-buttons-container .social-button .svg { width: 60%; fill: #fff; }
-        .bottom .social-buttons-container .social-button:hover .svg { fill: var(--primary); }
-
-        /* --- UI COMPONENTS --- */
-        .header-bar { position: fixed; top: 0; left: 0; width: 100%; padding: clamp(10px, 3vw, 30px) clamp(15px, 5vw, 80px); display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.8); z-index: 900; backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.1); }
-        [data-theme="light"] .header-bar { background: rgba(255,255,255,0.9); border-bottom-color: rgba(0,0,0,0.05); }
-        
-        .brand { font-family: var(--font-display); color: #fff; font-weight: 900; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; font-size: clamp(0.6rem, 2.5vw, 1rem); text-transform: uppercase; line-height: 1.2; }
-        [data-theme="light"] .brand { color: var(--text-main); }
-        .brand span { color: var(--primary); }
-        
-        /* HEADER VIDEO LOGO STYLE */
-        .brand-video {
-            height: clamp(15px, 4vw, 30px);
-            width: clamp(30px, 8vw, 60px);
             object-fit: cover;
-            border: 2px solid var(--primary);
-            box-shadow: 0 0 15px rgba(1,169,130,0.3);
-        }
-
-        .theme-ui { position: fixed; top: 20px; right: 20px; z-index: 1000; background: rgba(0,0,0,0.8); padding: 8px; border: 1px solid #333; backdrop-filter: blur(10px); display: flex; gap: 8px; border-radius: 50px; }
-        .theme-btn { background: transparent; border: 1px solid #555; color: #fff; padding: 6px 15px; font-family: var(--font-code); cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.65rem; border-radius: 20px; font-weight: 700; }
-        .theme-btn:hover, .theme-btn.active { border-color: var(--primary); background: var(--primary); color: #fff; }
-
-        .tag { font-family: var(--font-code); color: #fff; border: 1px solid #fff; padding: 6px 14px; font-size: 0.6rem; margin-right: 10px; display: inline-block; background: rgba(0,0,0,0.3); border-radius: 50px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; backdrop-filter: blur(5px); }
-        h2 { font-family: var(--font-display); font-size: clamp(1.5rem, 5vw, 3rem); color: var(--text-main); margin-bottom: 40px; text-transform: uppercase; letter-spacing: 1px; text-align: left; }
-        h3 { font-family: var(--font-display); color: var(--text-main); font-size: clamp(1rem, 3vw, 1.6rem); margin-bottom: 20px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 15px; }
-        [data-theme="light"] h3 { border-bottom-color: #eee; }
-        p { color: var(--text-main); line-height: 1.8; margin-bottom: 25px; font-size: clamp(0.85rem, 2vw, 1.1rem); }
-        .code-block { background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 12px; font-family: var(--font-code); font-size: 0.75rem; overflow-x: auto; margin: 20px 0; border-left: 5px solid var(--primary); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        /* Section 2 Video Container specific override */
-        .panel[style*="height: 400px"] {
-            height: auto !important;
-            min-height: 300px; /* Reduced mobile min-height */
-            width: 100%;
-        }
-        @media(min-width: 768px) {
-             .panel[style*="height: 400px"] { min-height: 400px; }
-        }
-
-        /* =========================================
-           SECTION 4: CYBER MAGAZINE RESPONSIVE
-           ========================================= */
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
-
-        :root {
-            --neon-green: #00ff9d;
-            --neon-blue: #00f3ff;
-            --cyber-black: #050505;
-            --glass-bg: rgba(10, 20, 20, 0.6);
-            --glass-border: rgba(0, 255, 157, 0.2);
-            --card-bg: rgba(10, 15, 15, 0.95);
-        }
-
-        #section4 {
-            position: relative;
-            background-color: #000;
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            padding: 0;
-            overflow-x: hidden;
-            min-height: 100vh;
-            width: 100%;
-        }
-
-        /* Canvas Background */
-        #section4 #cyberCanvas {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
+            opacity: 0.1;
+            mix-blend-mode: overlay;
+            z-index: -2;
             pointer-events: none;
         }
 
-        /* --- HEADER & TICKER --- */
-        #section4 .s4-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
+        .hero-gradient {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, var(--bg-dark) 90%);
+            z-index: -1;
+        }
+
+        /* Hero Content - FIXED FOR JITTER */
+        .hero-content {
+            text-align: center;
+            z-index: 10;
+            max-width: 900px;
+            padding: 0 20px;
+            will-change: transform, opacity;
+            /* CRITICAL FIX: Force hardware acceleration and prevent sub-pixel blur */
+            backface-visibility: hidden;
+            -webkit-font-smoothing: subpixel-antialiased; /* Crisp text */
+            transform: translate3d(0,0,0); /* Initialize GPU layer */
+        }
+
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 5rem);
+            line-height: 1.1;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+            opacity: 0; 
+            transform: translateY(30px);
+            /* Additional anti-jitter for large text */
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5); 
+        }
+
+        .hero-title span { color: var(--hpe-green); display: inline-block; }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        /* --- BUTTONS --- */
+        .btn-group {
             display: flex;
-            flex-direction: column;
-            background: rgba(0,0,0,0.9);
-            border-bottom: 1px solid var(--neon-green);
-            box-shadow: 0 0 20px rgba(0, 255, 157, 0.1);
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: clamp(12px, 2vw, 18px) clamp(24px, 4vw, 36px);
+            font-size: clamp(0.9rem, 1.5vw, 1rem);
+            font-weight: 600;
+            text-decoration: none;
+            border-radius: 4px;
+            transition: transform 0.2s var(--ease-elastic), box-shadow 0.3s ease, background-color 0.3s ease;
+            cursor: pointer;
+            overflow: hidden;
+            border: none;
+        }
+
+        .btn:active { transform: scale(0.96); }
+
+        .btn-primary {
+            background-color: var(--hpe-green);
+            color: white;
+            box-shadow: 0 4px 15px rgba(1, 169, 130, 0.3);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hpe-green-dark);
+            box-shadow: 0 8px 25px rgba(1, 169, 130, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: rgba(255,255,255,0.05);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.2);
             backdrop-filter: blur(10px);
         }
 
-        #section4 .s4-top-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px clamp(15px, 5vw, 40px);
-            flex-wrap: wrap;
-            gap: 10px;
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+            border-color: white;
+            transform: translateY(-2px);
         }
 
-        #section4 .s4-brand { display: flex; align-items: center; gap: 10px; }
-        #section4 .s4-logo-icon {
-            width: 30px; height: 30px; /* Smaller on mobile */
-            border: 2px solid var(--neon-green);
-            display: flex; align-items: center; justify-content: center;
-            position: relative;
-            flex-shrink: 0;
-        }
-        @media(min-width: 768px) { #section4 .s4-logo-icon { width: 40px; height: 40px; } }
+        /* --- SECTIONS --- */
+        section { padding: 100px 5%; position: relative; z-index: 5; }
 
-        #section4 .s4-logo-icon::after {
-            content: ''; position: absolute; width: 100%; height: 2px; background: var(--neon-green);
-            animation: scan 2s infinite linear;
-        }
-
-        #section4 .s4-logo-text {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(1rem, 4vw, 1.6rem);
-            font-weight: 900;
-            letter-spacing: 2px;
+        .section-label {
+            color: var(--hpe-green);
             text-transform: uppercase;
-        }
-        #section4 .s4-logo-text span { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
-
-        /* Ticker */
-        #section4 .s4-ticker-wrap {
-            width: 100%;
-            background: var(--neon-green);
-            color: #000;
-            overflow: hidden;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        #section4 .s4-ticker-label {
-            background: #000;
-            color: var(--neon-green);
-            padding: 0 15px; /* Tighter padding */
-            height: 100%;
-            display: flex;
-            align-items: center;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: clamp(0.6rem, 2vw, 0.9rem);
-            z-index: 2;
-            font-weight: bold;
-            flex-shrink: 0;
-        }
-        #section4 .s4-ticker-content {
-            display: inline-block;
-            white-space: nowrap;
-            padding-left: 100%;
-            animation: ticker 20s linear infinite;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: 600;
-            font-size: clamp(0.7rem, 2vw, 0.95rem);
-        }
-
-        /* --- STATUS BAR --- */
-        #section4 .s4-status-bar {
-            display: none; /* Hide on small mobile */
-            justify-content: flex-end;
-            align-items: center;
-            gap: 15px;
-            padding: 10px clamp(15px, 5vw, 40px);
-            background: #080a0a;
-            border-bottom: 1px solid #222;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.7rem;
-            color: #888;
-        }
-        @media(min-width: 600px) { #section4 .s4-status-bar { display: flex; } }
-
-        #section4 .s4-refresh-status { display: flex; align-items: center; gap: 10px; }
-        #section4 .s4-live-dot {
-            width: 8px; height: 8px;
-            background: #ff3333;
-            border-radius: 50%;
-            box-shadow: 0 0 10px #ff3333;
-            animation: blink 1s infinite;
-        }
-
-        /* --- GRID --- */
-        #section4 .s4-grid {
-            position: relative;
-            z-index: 10;
-            padding: 40px clamp(15px, 5vw, 40px);
-            max-width: 1800px;
-            margin: 0 auto;
-            display: grid;
-            /* Responsive grid columns */
-            grid-template-columns: 1fr; /* Single column on mobile */
-            gap: 30px;
-            perspective: 2000px;
-        }
-        @media (min-width: 600px) {
-            #section4 .s4-grid { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-        }
-
-        /* --- CARD 3D FLIP CONTAINER --- */
-        #section4 .s4-card-wrap {
-            position: relative;
-            /* Responsive height: significantly reduced on mobile */
-            min-height: 450px;
-        }
-        @media (min-width: 600px) {
-            #section4 .s4-card-wrap { min-height: 550px; }
-        }
-
-        #section4 .s4-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform-style: preserve-3d;
-            cursor: pointer;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-
-        /* Class added to trigger flip */
-        #section4 .s4-card-wrap.is-flipped .s4-card-inner {
-            transform: rotateY(180deg);
-        }
-
-        /* Common Face Styles */
-        #section4 .s4-front, #section4 .s4-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden; /* Safari */
-            backface-visibility: hidden;
-            border-radius: 20px;
-            overflow: hidden;
-        }
-
-        /* FRONT FACE */
-        #section4 .s4-front {
-            background: var(--card-bg);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* Video / Visual Layer */
-        #section4 .s4-visual-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 50%; /* Slightly smaller video area on mobile */
-            overflow: hidden;
-            z-index: 1;
-        }
-        @media (min-width: 600px) { #section4 .s4-visual-layer { height: 55%; } }
-
-        #section4 .s4-video-bg {
-            width: 100%; height: 100%; object-fit: cover;
-            opacity: 0.6;
-            transition: opacity 0.5s, transform 0.5s;
-        }
-        #section4 .s4-card-wrap:hover .s4-video-bg {
-            opacity: 0.8; transform: scale(1.05);
-        }
-        #section4 .s4-visual-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom, transparent 0%, var(--card-bg) 95%);
-            z-index: 2;
-        }
-
-        /* Content Layer Front */
-        #section4 .s4-content-layer {
-            position: absolute;
-            inset: 0;
-            padding: clamp(10px, 4vw, 25px);
-            z-index: 3;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            transform: translateZ(30px); /* 3D Pop */
-            pointer-events: none; /* Let clicks pass to flip logic */
-        }
-
-        /* Tags */
-        #section4 .s4-meta-top {
-            position: absolute; top: clamp(10px, 4vw, 25px); left: clamp(10px, 4vw, 25px); right: clamp(10px, 4vw, 25px);
-            display: flex; justify-content: space-between; align-items: flex-start;
-            transform: translateZ(40px);
-            pointer-events: auto;
-        }
-
-        #section4 .s4-tag {
-            background: rgba(0,0,0,0.7);
-            border: 1px solid var(--neon-blue);
-            color: var(--neon-blue);
-            padding: 3px 8px;
-            font-size: 0.6rem;
-            font-family: 'Orbitron', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            backdrop-filter: blur(5px);
-        }
-
-        #section4 .s4-time {
-            font-family: 'Share Tech Mono', monospace;
-            color: rgba(255,255,255,0.7);
-            font-size: 0.7rem;
-        }
-
-        /* Text */
-        #section4 .s4-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.9rem, 3vw, 1.4rem);
+            font-size: 0.85rem;
             font-weight: 700;
-            line-height: 1.3;
-            margin-bottom: 10px;
-            color: #fff;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
-            text-align: left;
+            letter-spacing: 1.5px;
+            margin-bottom: 16px;
+            display: block;
         }
 
-        #section4 .s4-desc {
-            font-size: clamp(0.8rem, 2vw, 0.95rem);
-            color: #ccc;
-            line-height: 1.5;
-            margin-bottom: 15px;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
-            text-align: left;
-        }
+        .section-header { margin-bottom: 60px; max-width: 800px; }
 
-        /* Footer Actions Front */
-        #section4 .s4-actions {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            padding-top: 10px;
-            transform: translateZ(40px);
-            pointer-events: auto;
-        }
-
-        #section4 .s4-source-pill {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 0.7rem; font-weight: 600; color: #fff;
-        }
-        #section4 .s4-source-dot { width: 6px; height: 6px; background: var(--neon-green); border-radius: 50%; }
-
-        #section4 .s4-btn-expand {
-            background: transparent;
-            border: 1px solid var(--neon-green);
-            color: var(--neon-green);
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(0.5rem, 2vw, 0.7rem);
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: 0.3s;
-            display: flex; align-items: center; gap: 5px;
-        }
-        #section4 .s4-btn-expand:hover {
-            background: var(--neon-green);
-            color: #000;
-            box-shadow: 0 0 15px var(--neon-green);
-        }
-
-        /* BACK FACE STYLES */
-        #section4 .s4-back {
-            background: linear-gradient(135deg, #0a0a0a 0%, #111 100%);
-            transform: rotateY(180deg);
-            border: 1px solid var(--neon-blue);
-            display: flex;
-            flex-direction: column;
-            padding: clamp(15px, 4vw, 30px);
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        #section4 .s4-back-content {
-            flex: 1;
-            overflow-y: auto;
-            width: 100%;
-            margin-bottom: 20px;
-            scrollbar-width: thin;
-            scrollbar-color: var(--neon-blue) #111;
-        }
-        
-        #section4 .s4-back-content::-webkit-scrollbar { width: 6px; }
-        #section4 .s4-back-content::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 3px; }
-
-        #section4 .s4-back h3 {
-            font-family: 'Orbitron', sans-serif;
-            color: var(--neon-blue);
-            margin-bottom: 15px;
-            font-size: 1rem;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        }
-
-        #section4 .s4-back p {
-            font-family: 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            color: #ddd;
-            line-height: 1.6;
-            text-align: left;
-        }
-
-        #section4 .s4-back-actions {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        #section4 .s4-btn-full {
-            background: var(--neon-blue);
-            color: #000;
-            border: none;
-            padding: 12px;
+        .section-header h2 {
+            font-size: clamp(2rem, 4vw, 2.8rem);
             font-weight: 700;
-            text-transform: uppercase;
-            font-family: 'Orbitron', sans-serif;
-            cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            text-align: center;
-            border-radius: 4px;
-            font-size: 0.9rem;
-        }
-        #section4 .s4-btn-full:hover { background: #fff; box-shadow: 0 0 20px var(--neon-blue); }
-
-        #section4 .s4-btn-back {
-            background: transparent;
-            border: 1px solid #444;
-            color: #888;
-            padding: 10px;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-family: 'Share Tech Mono', monospace;
-            transition: 0.3s;
-            font-size: 0.8rem;
-        }
-        #section4 .s4-btn-back:hover { border-color: #fff; color: #fff; }
-
-        /* Loading Skeleton */
-        #section4 .skeleton {
-            background: linear-gradient(90deg, #111 25%, #1a1a1a 50%, #111 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            border-radius: 4px;
-            color: transparent !important;
+            margin-bottom: 16px;
         }
 
-        /* --- MODAL --- */
-        #section4 .s4-modal-overlay {
-            position: fixed; inset: 0;
-            background: rgba(0,0,0,0.95);
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .feature-card {
+            background: var(--bg-card);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 12px;
+            padding: 40px;
             backdrop-filter: blur(20px);
-            z-index: 1000;
-            display: flex; justify-content: center; align-items: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.4s ease;
-            padding: 20px;
-        }
-        #section4 .s4-modal-overlay.active { opacity: 1; pointer-events: all; }
-
-        #section4 .s4-modal-win {
-            width: 100%; max-width: 100%; height: 100%; /* Mobile: Full screen */
-            background: #0a0c0c;
-            border: 1px solid #333;
-            display: grid;
-            grid-template-columns: 1fr;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,255,157,0.1);
-            transform: translateY(50px); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
-        @media (min-width: 900px) { 
-            #section4 .s4-modal-win { 
-                grid-template-columns: 1.2fr 0.8fr; 
-                height: 85vh; 
-                max-width: 1000px; 
-            } 
+            transition: all 0.5s var(--ease-smooth);
+            opacity: 0;
+            transform: translateY(30px);
         }
 
-        #section4 .s4-modal-overlay.active .s4-modal-win { transform: translateY(0); }
+        .feature-card.visible { opacity: 1; transform: translateY(0); }
 
-        #section4 .s4-modal-visual {
-            position: relative;
-            background: #000;
-            min-height: 200px; /* Mobile visual height */
-        }
-        @media(min-width: 900px) { #section4 .s4-modal-visual { min-height: 100%; } }
-
-        #section4 .s4-modal-video {
-            width: 100%; height: 100%; object-fit: cover; opacity: 0.7;
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(30, 35, 45, 0.8);
+            border-color: var(--hpe-green);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
 
-        #section4 .s4-modal-content {
-            padding: clamp(20px, 4vw, 40px);
-            overflow-y: auto;
-            position: relative;
-            background: 
-                linear-gradient(#0a0c0c 0 100%) padding-box,
-                linear-gradient(135deg, var(--neon-green), transparent) border-box;
-            border-left: 1px solid var(--neon-green);
+        .feature-icon {
+            width: 56px; height: 56px;
+            background: linear-gradient(135deg, rgba(1, 169, 130, 0.2), rgba(1, 169, 130, 0.05));
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--hpe-green); margin-bottom: 24px; font-size: 1.5rem;
         }
+
+        /* --- MEDIA & API --- */
+        .media-section { background: #0a0c0e; overflow: hidden; }
+        .media-container { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
         
-        #section4 .s4-close-btn {
-            position: absolute; top: 20px; right: 20px;
-            background: transparent; border: none; color: #fff;
-            font-size: 2rem; cursor: pointer; z-index: 20;
-            transition: 0.3s;
+        .video-box {
+            position: relative; border-radius: 16px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.6);
+            transform: perspective(1000px) rotateY(-5deg) rotateX(5deg);
+            transition: transform 0.5s var(--ease-elastic);
         }
-        #section4 .s4-close-btn:hover { color: var(--neon-green); transform: rotate(90deg); }
+        .video-box:hover { transform: perspective(1000px) rotateY(0) rotateX(0); }
+        video { width: 100%; display: block; opacity: 0.85; }
 
-        #section4 .s4-m-header { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        #section4 .s4-m-cat { color: var(--neon-blue); font-family: 'Share Tech Mono'; font-size: 0.8rem; }
+        .api-wrapper { perspective: 1500px; }
+        .api-console {
+            background: rgba(13, 17, 23, 0.95); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px; display: grid; grid-template-columns: 40% 60%;
+            min-height: 500px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            transform-style: preserve-3d; transition: transform 0.1s ease-out;
+        }
+        .console-left { padding: 30px; border-right: 1px solid rgba(255,255,255,0.05); }
+        .console-right { background: #000; padding: 30px; font-family: 'JetBrains Mono', monospace; overflow-y: auto; }
         
-        #section4 .s4-m-title {
-            font-family: 'Orbitron', sans-serif; font-size: clamp(1.2rem, 4vw, 2rem); line-height: 1.2; margin-bottom: 20px; color: #fff;
+        .input-group { margin-bottom: 20px; }
+        .input-label { display: block; color: var(--text-muted); font-size: 0.8rem; margin-bottom: 8px; text-transform: uppercase; }
+        .styled-select, .styled-input, .styled-textarea {
+            width: 100%; background: #161b22; border: 1px solid #30363d;
+            color: #fff; padding: 12px; border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; transition: border-color 0.3s;
         }
+        .styled-select:focus, .styled-input:focus { outline: none; border-color: var(--hpe-green); }
 
-        #section4 .s4-m-stats {
-            display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
-            border-bottom: 1px solid #222; padding-bottom: 15px;
+        /* Syntax */
+        .json-key { color: #79c0ff; }
+        .json-string { color: #a5d6ff; }
+        .json-number { color: #d2a8ff; }
+        .json-boolean { color: #ff7b72; }
+
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 80px 5% 40px; background: #050608; }
+        .footer-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 60px; margin-bottom: 60px; }
+
+        @media (max-width: 900px) {
+            .media-container, .api-console { grid-template-columns: 1fr; }
+            .console-left { border-right: none; border-bottom: 1px solid #30363d; }
+            .video-box { transform: none; margin-bottom: 40px; }
+            .footer-grid { grid-template-columns: 1fr; }
         }
-        #section4 .s4-stat-item { font-size: 0.8rem; color: #888; display: flex; gap: 5px; align-items: center; }
-        #section4 .s4-stat-item span { color: #fff; font-family: 'Share Tech Mono'; }
-
-        #section4 .s4-m-text {
-            font-family: 'Rajdhani', sans-serif; font-size: 1rem; line-height: 1.8; color: #ccc; margin-bottom: 30px;
-        }
-
-        #section4 .s4-m-action {
-            display: block; width: fit-content;
-            padding: 12px 25px;
-            background: var(--neon-green); color: #000;
-            text-decoration: none; font-weight: bold;
-            font-family: 'Orbitron', sans-serif;
-            transition: 0.3s;
-        }
-        #section4 .s4-m-action:hover { background: #fff; box-shadow: 0 0 20px #fff; }
-
-        /* Animations */
-        @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-100%); } }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-        @keyframes loading { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
-
     </style>
 </head>
 <body>
 
-    <!-- 1. CINEMATIC ENTRANCE -->
-    <div id="intro-loader" aria-hidden="true">
-        <div class="entrance-fingerprint">
-            <label class="switch">
-                <input type="checkbox" id="entrance-check" aria-label="Initiate System Access">
-                <div class="button">
-                    <span class="icon">
-                        <svg xml:space="preserve" viewBox="0 0 463 463" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" id="Capa_1" version="1.1"><g stroke-width="0" id="SVGRepo_bgCarrier"></g><g stroke-linejoin="round" stroke-linecap="round" id="SVGRepo_tracerCarrier"></g><g id="SVGRepo_iconCarrier"> <g> <path d="M259.476,280.364V247.5c0-12.958-10.542-23.5-23.5-23.5s-23.5,10.542-23.5,23.5v29.672 c0,35.757-13.173,70.087-37.094,96.665l-32.981,36.646c-2.771,3.079-2.521,7.821,0.558,10.593c3.078,2.771,7.82,2.521,10.592-0.558 l32.981-36.646c26.403-29.338,40.944-67.231,40.944-106.7V247.5c0-4.687,3.813-8.5,8.5-8.5s8.5,3.813,8.5,8.5v32.864 c0,44.003-16.301,86.167-45.901,118.727l-32.149,35.364c-2.786,3.064-2.56,7.809,0.505,10.595c1.437,1.307,3.242,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l32.148-35.364C241.789,373.854,259.476,328.106,259.476,280.364z"></path> <path d="M291.476,247.5c0-30.603-24.897-55.5-55.5-55.5s-55.5,24.897-55.5,55.5v29.672c0,27.839-10.256,54.566-28.879,75.258 l-23.447,26.053c-2.771,3.079-2.521,7.821,0.558,10.593c3.079,2.771,7.82,2.519,10.592-0.558l23.447-26.053 c21.106-23.451,32.73-53.742,32.73-85.293V247.5c0-22.332,18.168-40.5,40.5-40.5c22.332,0,40.5,18.168,40.5,40.5v32.864 c0,51.979-19.256,101.789-54.223,140.252l-27.125,29.839c-2.787,3.064-2.56,7.809,0.504,10.595c1.437,1.307,3.243,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l27.126-29.839c37.481-41.23,58.123-94.622,58.123-150.342V247.5z"></path> <path d="M323.476,247.5c0-48.248-39.252-87.5-87.5-87.5s-87.5,39.252-87.5,87.5v29.672c0,19.92-7.339,39.045-20.665,53.851 l-21.112,23.458c-2.771,3.079-2.521,7.821,0.558,10.593c3.078,2.771,7.821,2.519,10.592-0.558l21.112-23.458 c15.809-17.565,24.515-40.254,24.515-63.886V247.5c0-39.977,32.523-72.5,72.5-72.5s72.5,32.523,72.5,72.5v32.864 c0,59.958-22.212,117.412-62.545,161.777l-7.507,8.258c-2.786,3.065-2.56,7.809,0.505,10.595c1.437,1.306,3.243,1.95,5.042,1.95 c2.04,0,4.072-0.827,5.552-2.455l7.506-8.258c42.848-47.133,66.446-108.169,66.446-171.867V247.5z"></path> </g> </g></svg>
-                    </span>
-                </div>
-            </label>
+    <!-- 1. Animated Intro Overlay -->
+    <div id="intro-overlay">
+        <div class="intro-logo">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none">
+                <rect width="10" height="24" fill="#01A982"/>
+                <rect x="14" width="10" height="24" fill="#01A982" fill-opacity="0.6"/>
+            </svg>
         </div>
-        <div class="loading-text" id="loading-msg">SYSTEM ACCESS</div>
+        <div class="intro-curtain"></div>
     </div>
 
-    <div id="intro-slideshow" aria-hidden="true"></div>
+    <!-- 2. Dynamic Hero Section -->
+    <div class="parallax-wrapper" id="hero">
+        <!-- Background Images (Slideshow) -->
+        <!-- Image 1: Server Room -->
+        <div class="hero-bg active" style="background-image: url('https://images.pexels.com/photos/2582937/pexels-photo-2582937.jpeg?auto=compress&cs=tinysrgb&w=1920');"></div>
+        <!-- Image 2: Abstract Tech Network -->
+        <div class="hero-bg" style="background-image: url('https://images.pexels.com/photos/5380642/pexels-photo-5380642.jpeg?auto=compress&cs=tinysrgb&w=1920');"></div>
+        <!-- Image 3: Data Center Blue -->
+        <div class="hero-bg" style="background-image: url('https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1920');"></div>
 
-    <!-- 2. UI HEADER -->
-    <header class="header-bar">
-        <div class="brand">
-            <!-- NEW: VIDEO LOGO LEFT OF TEXT -->
-            <!-- Placeholder MP4. Replace src with your specific file. -->
-            <video class="brand-video" autoplay muted loop playsinline>
-                <source src="Logo.mp4" type="video/mp4">
-            </video>
-            
-            HEWLETT PACKARD <span style="color: var(--primary); font-size: 1.2rem;">//</span> 
-            <span style="color: var(--text-main);">ENTERPRISE</span>
+        <!-- Video Texture -->
+        <video class="hero-video-overlay" autoplay muted loop playsinline>
+            <source src="https://videos.pexels.com/video-files/3129671/3129671-uhd_2560_1440_30fps.mp4" type="video/mp4">
+        </video>
+
+        <div class="hero-gradient"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title">Transforming Data<br>Into <span>Value</span>.</h1>
+            <p class="hero-subtitle">Architecting the secure, high-performance edge-to-cloud ecosystem for the modern enterprise.</p>
+            <div class="btn-group">
+                <a href="#api" class="btn btn-primary">Start Building</a>
+                <a href="#media" class="btn btn-secondary">View Solutions</a>
+            </div>
         </div>
-        <div class="theme-ui">
-            <button class="theme-btn" onclick="setTheme('light', this)">Light</button>
-            <button class="theme-btn active" onclick="setTheme('corporate', this)">Dark</button>
+    </div>
+
+    <!-- Navigation -->
+    <header style="position: fixed; top: 0; width: 100%; z-index: 1000; padding: 20px 5%; background: rgba(15, 18, 21, 0.8); backdrop-filter: blur(10px); border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center;">
+        <div style="font-weight: 700; font-size: 1.25rem; color: white; display: flex; align-items: center; gap: 10px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect width="10" height="24" fill="#01A982"/><rect x="14" width="10" height="24" fill="#01A982" fill-opacity="0.6"/></svg>
+            HPE Developers
         </div>
+        <nav style="display: flex; gap: 30px;">
+            <a href="#mission" style="color: #9ca3af; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Platform</a>
+            <a href="#media" style="color: #9ca3af; text-decoration: none; font-size: 0.9rem; transition: color 0.3s;">Media</a>
+            <a href="#api" style="color: #01A982; text-decoration: none; font-weight: 600; font-size: 0.9rem;">API Console</a>
+        </nav>
     </header>
 
-    <!-- HERO SECTION -->
-    <section class="hero-header">
-        <!-- HERO MEDIA CONTAINER (For mixed images/video) -->
-        <div id="hero-media-layer"></div>
-
-        <div class="hero-text-backdrop"></div>
-        <div class="hero-content">
-            <div style="margin-bottom: 25px;">
-                <span class="tag">FORAGE SIMULATION 2026</span>
+    <!-- Mission Section -->
+    <section id="mission">
+        <div class="section-header">
+            <span class="section-label">Our Platform</span>
+            <h2>Engineered for Scale</h2>
+            <p style="color: var(--text-muted); max-width: 600px;">Every endpoint is designed with security, compliance, and performance as foundational pillars.</p>
+        </div>
+        <div class="grid-3">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Enterprise Security</h3>
+                <p style="color: var(--text-muted);">Built-in mTLS and OAuth2 ensure that your data remains secure across hybrid cloud environments.</p>
             </div>
-            <h1>
-                <span class="hword">HPE</span>
-                <span class="hword">Software</span>
-                <span class="hword">Engineering</span>
-                <br>
-                <span class="hsub">Job Simulation</span>
-            </h1>
-            <p>
-                <strong>EXTREME TECHNICAL DOSSIER</strong><br>
-                A narrative-driven record of Backend Engineering simulation. 
-                Translating business requirements into a functional RESTful web service using Java Spring Boot.
-            </p>
-            <div style="margin-top: 40px; width: 100%; display: flex; justify-content: flex-start;">
-                <button class="initiate-dossier-btn" onclick="document.getElementById('details').scrollIntoView()">Initiate Dossier</button>
+            <div class="feature-card" style="transition-delay: 0.1s;">
+                <div class="feature-icon">⚡</div>
+                <h3>Low Latency</h3>
+                <p style="color: var(--text-muted);">Global edge caching points reduce latency by up to 40%, delivering real-time data where it's needed.</p>
+            </div>
+            <div class="feature-card" style="transition-delay: 0.2s;">
+                <div class="feature-icon">📊</div>
+                <h3>Observability</h3>
+                <p style="color: var(--text-muted);">Deep integration with HPE InfoSight for predictive analytics and automated troubleshooting.</p>
             </div>
         </div>
     </section>
 
-    <main class="page-wrapper">
-        
-        <!-- SECTION: CANDIDATE SNAPSHOT -->
-        <section id="details">
-            <div class="grid-asym-1-2">
-                <!-- LEFT: Dossier Details -->
-                <article class="panel">
-                    <div class="dossier-title">Operative Profile</div>
-                    
-                    <div class="candidate-wrapper">
-                        <div class="candidate-photo-box">
-                            <img src="https://media.licdn.com/dms/image/v2/D4D03AQHNltVCxeh8ng/profile-displayphoto-scale_200_200/B4DZtziQeXI4AY-/0/1767169922313?e=1772064000&v=beta&t=BDy8j8MgVAFj2ZPOhhX3piZwbT1ti-j-1RwXbPRiR-0" alt="Candidate Portrait">
-                        </div>
-                        <div style="text-align: center; margin-top: 25px;">
-                            <h2 style="font-size: clamp(1.2rem, 4vw, 2rem); margin: 0; color: var(--text-main);">Thabang Tony Ngoepe</h2>
-                            <p style="margin: 5px 0; color: var(--primary); font-weight: 700; font-size: 1rem;">Backend / Software Engineer</p>
-                        </div>
-                        
-                        <div class="candidate-social-bar">
-                            <a href="https://www.linkedin.com/in/tony-n-143420353/" target="_blank" class="social-link">
-                                <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                                LinkedIn
-                            </a>
-                            <a href="https://github.com/hak3du" target="_blank" class="social-link">
-                                <svg viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576.447-1.377 2-5.511 3.387-11.206 3.387z"/></svg>
-                                GitHub
-                            </a>
-                        </div>
-                    </div>
+    <!-- Media Section -->
+    <section id="media" class="media-section">
+        <div class="media-container">
+            <div>
+                <span class="section-label">In Action</span>
+                <h2 style="font-size: 2.5rem; margin-bottom: 20px;">Visualizing the Flow</h2>
+                <p style="color: var(--text-muted); margin-bottom: 30px; line-height: 1.7;">Experience the HPE infrastructure handling complex workloads. Our platform visualizes data packets traversing from edge devices to the cloud core in real-time.</p>
+                <ul style="list-style: none; color: var(--text-muted); margin-bottom: 30px;">
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;"><span style="color: var(--hpe-green);">✓</span> Real-time topology mapping</li>
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;"><span style="color: var(--hpe-green);">✓</span> Predictive AI scaling</li>
+                    <li style="margin-bottom: 12px; display: flex; align-items: center; gap: 10px;"><span style="color: var(--hpe-green);">✓</span> Automated compliance reporting</li>
+                </ul>
+            </div>
+            <div class="video-box">
+                <div style="position: absolute; top: 20px; left: 20px; background: rgba(0,0,0,0.7); color: white; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; z-index: 2;">LIVE DEMO</div>
+                <video controls poster="https://picsum.photos/seed/hpehardware/800/500">
+                    <source src="https://videos.pexels.com/video-files/853800/853800-hd_1920_1080_25fps.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
 
-                    <div style="background: rgba(1, 169, 130, 0.1); border-left: 5px solid var(--primary); padding: 25px; border-radius: 0 12px 12px 0; margin-bottom: 30px;">
-                        <h4 style="color: var(--primary); margin-bottom: 10px; font-family: var(--font-display); font-size: 1rem; text-transform: uppercase;">Mission Objective</h4>
-                        <p style="margin:0; font-size: 0.95rem;">
-                            The challenge was clear: Construct a digital backbone capable of managing employee records end-to-end. This wasn't just about writing code; it was about architecting a system that scales.
-                        </p>
+    <!-- API Console -->
+    <section id="api">
+        <div class="section-header">
+            <span class="section-label">Developer Tools</span>
+            <h2>Try the API</h2>
+        </div>
+        <div class="api-wrapper">
+            <div class="api-console" id="tiltCard">
+                <div class="console-left">
+                    <div class="input-group">
+                        <label class="input-label">Method</label>
+                        <select id="method" class="styled-select">
+                            <option value="GET">GET</option>
+                            <option value="POST">POST</option>
+                            <option value="PUT">PUT</option>
+                            <option value="DELETE">DELETE</option>
+                        </select>
                     </div>
-
-                    <div class="audio-container">
-                        <div class="audio-info">
-                            <h5>Mission Briefing</h5>
-                            <p>0:45 // Context & Strategy</p>
-                        </div>
-                        <button class="audio-trigger" onclick="playAudio(this, 'briefing')">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            PLAY LOG
-                        </button>
+                    <div class="input-group">
+                        <label class="input-label">Endpoint</label>
+                        <input type="text" class="styled-input" value="https://api.hpe.com/v1/infrastructure" readonly>
                     </div>
-
-                    <div class="info-grid">
-                        <div>
-                            <span class="info-label">Platform</span>
-                            <span class="info-value">Forage</span>
-                        </div>
-                        <div>
-                            <span class="info-label">Date</span>
-                            <time class="info-value" datetime="2026-02">Feb 2026</time>
-                        </div>
-                        <div>
-                            <span class="info-label">Stack</span>
-                            <span class="info-value">Java / Spring</span>
-                        </div>
-                        <div>
-                            <span class="info-label">Status</span>
-                            <span class="info-value" style="color: var(--primary);">Completed</span>
-                        </div>
+                    <div class="input-group" id="body-group" style="display:none;">
+                        <label class="input-label">Payload</label>
+                        <textarea class="styled-textarea" rows="5">{
+  "server_id": "hpe-gen11-01",
+  "action": "provision"
+}</textarea>
                     </div>
-                </article>
+                    <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="runApi()">
+                        <span id="btn-text">Execute Request</span>
+                    </button>
+                </div>
+                <div class="console-right" id="output">
+                    <div style="color: #484f58; margin-bottom: 10px;">// Response Output</div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- RIGHT: STACKED CARD & VIDEO -->
-                <div style="display: flex; flex-direction: column; gap: 30px; align-items: center;">
-                    <div class="parent">
-                        <div class="card" data-tilt data-tilt-max="25" data-tilt-speed="400" data-tilt-glare data-tilt-max-glare="0.5">
-                            <div class="logo">
-                                <span class="circle circle1"></span><span class="circle circle2"></span>
-                                <span class="circle circle3"></span><span class="circle circle4"></span>
-                                <span class="circle5"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.667 31.69" class="svg"><path id="Path_6" fill="#fff" d="M12.827,1.628A1.561,1.561,0,0,1,14.31,0h2.964a1.561,1.561,0,0,1,1.483,1.628v11.9a9.252,9.252,0,0,1-2.432,6.852q-2.432,2.409-6.963,2.409T2.4,20.452Q0,18.094,0,13.669V1.628A1.561,1.561,0,0,1,1.483,0h2.98A1.561,1.561,0,0,1,5.947,1.628V13.191a5.635,5.635,0,0,0,.85,3.451,3.153,3.153,0,0,0,2.632,1.094,3.032,3.032,0,0,0,2.582-1.076,5.836,5.836,0,0,0,.816-3.486Z" transform="translate(0 0)"></path></svg></span>
-                            </div>
-                            <div class="glass"></div>
-                            <div class="content">
-                                <span class="title">HPE 2026</span>
-                                <span class="text">Enterprise Backend Engineering</span>
-                            </div>
-                            <div class="bottom">
-                                <div class="social-buttons-container">
-                                    <button class="social-button" aria-label="View Profile"><svg viewBox="0 0 30 30" class="svg"><path d="M15,9C18.309,9,21,11.691,21,15c0,3.309-2.691,6-6,6s-6-2.691-6-6C9,11.691,11.691,9,15,9z M15,11c-2.206,0-4,1.794-4,4s1.794,4,4,4s4-1.794,4-4S17.206,11,15,11z"></path></svg></button>
-                                    <button class="social-button" aria-label="Share"><svg viewBox="0 0 512 512" class="svg"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0,18.843-1.3,27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z"></path></svg></button>
-                                </div>
-                                <div class="view-more">
-                                    <button class="view-more-button">Details</button>
-                                    <svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Footer -->
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <div style="font-weight: 700; font-size: 1.5rem; color: white; margin-bottom: 20px;">HPE Developers</div>
+                <p style="color: var(--text-muted); max-width: 300px;">Accelerating outcomes for the modern enterprise through open, secure APIs.</p>
+            </div>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px;">
+                <div>
+                    <h4 style="color: white; margin-bottom: 20px;">Platform</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="#" style="color: var(--text-muted); text-decoration: none;">Overview</a>
+                        <a href="#" style="color: var(--text-muted); text-decoration: none;">Security</a>
                     </div>
-
-                    <div class="panel" style="padding: 20px; min-height: 300px ; width: 100%; max-width: 100%; align-self: center; display: flex; flex-direction: column; align-items: center;">
-                        <h3 style="font-size: 0.9rem; border: none; padding: 0; margin-bottom: 20px; text-align: center;">System Explainer</h3>
-                        <div class="video-reflect-container small">
-                            <div class="video-wrapper">
-                                <iframe src="https://youtu.be/3zwMiJFDcGs" title="HPE Demo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                                <div class="screen-glare"></div>
-                            </div>
-                        </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 20px;">Resources</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="#" style="color: var(--text-muted); text-decoration: none;">Docs</a>
+                        <a href="#" style="color: var(--text-muted); text-decoration: none;">SDKs</a>
+                    </div>
+                </div>
+                <div>
+                    <h4 style="color: white; margin-bottom: 20px;">Legal</h4>
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <a href="#" style="color: var(--text-muted); text-decoration: none;">Privacy</a>
+                        <a href="#" style="color: var(--text-muted); text-decoration: none;">Terms</a>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- PHASES SECTION -->
-        <section id="phases">
-            <h2 style="text-align: center; margin-bottom: 60px;">Operational Phases</h2>
-
-            <!-- Phase 1 -->
-            <div class="grid-asym-2-1" style="margin-bottom: 80px;">
-                <article class="panel">
-                    <h3>PHASE 1 // THE BLUEPRINT</h3>
-                    <p>Every empire is built on a blueprint. Before writing a single line of Java, we needed to understand the landscape.</p>
-                    <p><strong>The Strategy:</strong> We analyzed the business need to manage employee records efficiently. We defined the data schema—ID, Name, Email, Title—and mapped out the REST endpoints (POST/GET) required to interface with the system. A three-layer architecture (Controller → Service → Model) was proposed to ensure modularity.</p>
-                    
-                    <div class="audio-container">
-                        <div class="audio-info">
-                            <h5>Architectural Intent</h5>
-                            <p>1:20 // Design Decisions</p>
-                        </div>
-                        <button class="audio-trigger" onclick="playAudio(this, 'arch')">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            PLAY LOG
-                        </button>
-                    </div>
-
-                    <ul style="margin-left: 25px; line-height: 2; font-size: 1rem; color: var(--text-muted);">
-                        <li>Identified business need: manage employee records efficiently.</li>
-                        <li>Defined data schema: employee ID, first name, last name, email, job title.</li>
-                        <li>Planned REST endpoints: POST /employees, GET /employees.</li>
-                        <li>Suggested 3-layer architecture: Controller → Service → Model.</li>
-                    </ul>
-                </article>
-                
-                <div class="glassmorphic-img-container">
-                    <img src="https://picsum.photos/seed/architecture/600/400" alt="System Architecture Blueprint">
-                </div>
-            </div>
-
-            <!-- Phase 2 -->
-            <div class="grid-asym-1-2" style="margin-bottom: 80px;">
-                <div class="panel panel-solid" style="padding: 0; overflow: hidden; border: none; box-shadow: var(--glass-shadow);">
-                    <div class="video-reflect-container" style="margin: 0;">
-                        <div class="video-wrapper">
-                            <iframe width="560" height="315" src="https://www.youtube.com/watch?v=bxuYDT-BWaI&t=1s" title="System Architecture Explainer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <div class="screen-glare"></div>
-                        </div>
-                    </div>
-                 
-                </div>
-                
-                <article class="panel">
-                    <h3>PHASE 2 // CONSTRUCTION</h3>
-                    <p>With the blueprint finalized, construction commenced. This is where abstract requirements transformed into tangible logic.</p>
-                    <p>We implemented the <code>Employee</code> class with strict encapsulation—private fields accessed only via getters and setters. The <code>EmployeeManager</code> was deployed to handle in-memory data, ensuring the application could process requests in real-time. We configured JSON parsing for data exchange and established HTTP status codes (200 OK, 201 Created) for proper client communication.</p>
-                    
-                    <div class="audio-container">
-                        <div class="audio-info">
-                            <h5>Development Log</h5>
-                            <p>2:15 // Implementation</p>
-                        </div>
-                        <button class="audio-trigger" onclick="playAudio(this, 'dev')">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            PLAY LOG
-                        </button>
-                    </div>
-                    
-                    <div style="margin-top: 30px;">
-                        <span class="tag">Java OOP</span>
-                        <span class="tag">REST API</span>
-                        <span class="tag">Spring Boot</span>
-                    </div>
-                </article>
-            </div>
-
-            <!-- Phase 3 -->
-            <div class="grid-asym-2-1">
-                <article class="panel">
-                    <h3>PHASE 3 // VERIFICATION</h3>
-                    <p>Robustness is defined by failure, or lack thereof. The final phase was a stress test of our logic.</p>
-                    <p>Automated tests were initialized using <code>@BeforeEach</code> to ensure a clean slate for every trial. We asserted that adding an employee increased the list size by exactly one. We verified the existence of all critical fields (ID, Name, Email, Title). The result was comprehensive coverage with six passing tests, proving the system's integrity.</p>
-
-                    <div class="audio-container">
-                        <div class="audio-info">
-                            <h5>QA Results</h5>
-                            <p>0:50 // Testing</p>
-                        </div>
-                        <button class="audio-trigger" onclick="playAudio(this, 'qa')">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            PLAY LOG
-                        </button>
-                    </div>
-                </article>
-                
-                <div class="glassmorphic-img-container">
-                    <img src="https://picsum.photos/seed/serverroom/600/400" alt="Server Verification Success">
-                    <div style="position: absolute; bottom: 15px; left: 15px; background: rgba(0,0,0,0.7); color: var(--primary); padding: 5px 10px; font-family: var(--font-code); font-weight: bold; font-size: 0.8rem; backdrop-filter: blur(4px); border-radius: 4px;">
-                        STATUS: VERIFIED
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- TECHNICAL GUIDE -->
-        <section id="guide">
-            <h2 style="margin-bottom: 50px;">Dynamic Data Strategy</h2>
-            
-            <div class="grid-asym-1-1">
-                <article class="panel">
-                    <h3>The Philosophy: Static vs. Dynamic</h3>
-                    <p><strong>True engineering power lies in adaptability.</strong></p>
-                    <p>Dynamically showing data means content is not hardcoded into the HTML, but fetched from a source—be it a Database, a JSON file, or a live API—and rendered on the fly. This shift from static pages to dynamic web applications is the cornerstone of modern backend engineering.</p>
-
-                    <div style="margin-bottom: 25px;">
-                        <strong style="color: var(--primary); font-size: 1.1rem;">For Beginners:</strong>
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">Focus on the <code>fetch()</code> API, parsing JSON arrays, and using JavaScript <code>forEach</code> loops to create HTML elements programmatically.</p>
-                    </div>
-                    <div>
-                        <strong style="color: var(--primary); font-size: 1.1rem;">For Professionals:</strong>
-                        <p style="font-size: 0.95rem; color: var(--text-muted);">Focus on state management, caching strategies, pagination logic, and securing API endpoints.</p>
-                    </div>
-                </article>
-
-                <article class="panel">
-                    <h3>Code Implementation</h3>
-                    
-                    <div class="audio-container" style="margin-bottom: 20px;">
-                        <div class="audio-info">
-                            <h5>Code Walkthrough</h5>
-                            <p>3:10 // JS & Java</p>
-                        </div>
-                        <button class="audio-trigger" onclick="playAudio(this, 'code')">
-                            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            PLAY LOG
-                        </button>
-                    </div>
-
-                    <div class="code-block">
-<span class="code-comment">// Fetch data and render cards</span>
-fetch(<span class="code-string">'/api/employees'</span>)
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById(<span class="code-string">'list'</span>);
-    data.forEach(emp => {
-       <span class="code-comment">// Create DOM elements dynamically</span>
-       const card = document.createElement(<span class="code-string">'div'</span>);
-       card.innerHTML = `&lt;h3&gt;${emp.name}&lt;/h3&gt;`;
-       container.appendChild(card);
-    });
-  });
-                    </div>
-                </article>
-            </div>
-        </section>
-
-        <!-- ======================================================= -->
-        <!-- SECTION 4: ENHANCED MULTI-SOURCE LIVE CYBER MAGAZINE -->
-        <!-- ======================================================= -->
-        <section id="section4">
-
-            <!-- CANVAS BACKGROUND -->
-            <canvas id="cyberCanvas"></canvas>
-
-            <!-- HEADER -->
-            <header class="s4-header">
-                <div class="s4-top-bar">
-                    <div class="s4-brand">
-                        <div class="s4-logo-icon">
-                            <svg viewBox="0 0 24 24" width="20" height="20" fill="var(--neon-green)"><path d="M12 2L2 7l10 5 10-5-10-5zm0 9l2.5-1.25L12 8.5l-2.5 1.25L12 11zm0 2.5l-5-2.5-5 2.5L12 22l10-8.5-5-2.5-5 2.5z"/></svg>
-                        </div>
-                        <div class="s4-logo-text">CYBER<span>NEXUS</span></div>
-                    </div>
-                    
-                    <div class="s4-timer-container" style="text-align: right;">
-                        <div style="font-size: 0.6rem; color: #666; margin-bottom: 2px;">NEXT UPDATE</div>
-                        <div id="s4Countdown" style="font-family: 'Share Tech Mono'; color: var(--neon-green); font-size: 1rem;">00:30</div>
-                    </div>
-                </div>
-
-                <div class="s4-ticker-wrap">
-                    <div class="s4-ticker-label">BREAKING FEED // LIVE</div>
-                    <div class="s4-ticker-content" id="s4TickerContent">
-                        INITIALIZING DATA STREAMS... CONNECTING TO GLOBAL NODES...
-                    </div>
-                </div>
-
-                <div class="s4-status-bar">
-                    <span>SERVER: <span style="color:var(--neon-green)">ONLINE</span></span>
-                    <span class="s4-refresh-status"><div class="s4-live-dot"></div> LIVE FEED ACTIVE</span>
-                    <span>LATENCY: 24ms</span>
-                </div>
-            </header>
-
-            <!-- NEWS GRID -->
-            <div class="s4-grid" id="s4Grid">
-                <!-- Cards injected via JS -->
-            </div>
-
-            <!-- MODAL -->
-            <div class="s4-modal-overlay" id="s4Modal">
-                <button class="s4-close-btn" onclick="s4CloseModal()">&times;</button>
-                <div class="s4-modal-win">
-                    <div class="s4-modal-visual">
-                        <video class="s4-modal-video" id="s4ModalVideo" loop muted playsinline></video>
-                        <div style="position: absolute; bottom: 20px; left: 20px; font-family: 'Share Tech Mono'; color: var(--neon-green);">
-                            // ENCRYPTED VISUAL LINK
-                        </div>
-                    </div>
-                    <div class="s4-modal-content">
-                        <div class="s4-m-header">
-                            <span class="s4-m-cat" id="s4ModalCat">TECHNOLOGY</span>
-                            <span class="s4-m-cat" style="color: #666">|</span>
-                            <span class="s4-m-cat" id="s4ModalDate">2023.10.27</span>
-                        </div>
-                        <h2 class="s4-m-title" id="s4ModalTitle">Article Title</h2>
-                        
-                        <div class="s4-m-stats">
-                            <div class="s4-stat-item">SOURCE: <span id="s4ModalSource">THE VERGE</span></div>
-                            <div class="s4-stat-item">READ TIME: <span id="s4ModalReadTime">5 MIN</span></div>
-                        </div>
-
-                        <div class="s4-m-text" id="s4ModalDesc">
-                            Full article content would appear here. This is a generated preview based on the RSS feed data extracted from the source. 
-                        </div>
-
-                        <a href="#" id="s4ModalLink" target="_blank" class="s4-m-action">ACCESS FULL DATA</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- LOGIC -->
-            <script>
-                (function() {
-                    // --- CONFIGURATION ---
-                    const UPDATE_INTERVAL = 35;
-                    const FEEDS = [
-                        { name: "THE VERGE", url: "https://www.theverge.com/rss/index.xml" },
-                        { name: "TECHCRUNCH", url: "https://techcrunch.com/feed/" },
-                        { name: "WIRED", url: "https://www.wired.com/feed/rss" },
-                        { name: "ARSTECHNICA", url: "https://feeds.arstechnica.com/arstechnica/index" },
-                        { name: "BBC TECH", url: "http://feeds.bbci.co.uk/news/technology/rss.xml" }
-                    ];
-
-                    const VIDEOS = [
-                        "https://videos.pexels.com/video-files/3129671/3129671-hd_1920_1080_30fps.mp4", 
-                        "https://videos.pexels.com/video-files/3129957/3129957-hd_1920_1080_25fps.mp4", 
-                        "https://videos.pexels.com/video-files/856973/856973-hd_1920_1080_30fps.mp4",   
-                        "https://videos.pexels.com/video-files/853789/853789-hd_1920_1080_30fps.mp4",   
-                        "https://videos.pexels.com/video-files/5408401/5408401-hd_1920_1080_30fps.mp4",   
-                        "https://videos.pexels.com/video-files/3130570/3130570-hd_1920_1080_30fps.mp4"  
-                    ];
-
-                    const grid = document.getElementById('s4Grid');
-                    const modal = document.getElementById('s4Modal');
-                    const ticker = document.getElementById('s4TickerContent');
-
-                    // --- CANVAS BACKGROUND ---
-                    const canvas = document.getElementById('cyberCanvas');
-                    const ctx = canvas.getContext('2d');
-                    let width, height, particles = [];
-
-                    function resizeCanvas() {
-                        width = canvas.width = window.innerWidth;
-                        height = canvas.height = window.innerHeight;
-                    }
-                    window.addEventListener('resize', resizeCanvas);
-                    resizeCanvas();
-
-                    class Particle {
-                        constructor() {
-                            this.x = Math.random() * width;
-                            this.y = Math.random() * height;
-                            this.vx = (Math.random() - 0.5) * 0.5;
-                            this.vy = (Math.random() - 0.5) * 0.5;
-                            this.size = Math.random() * 2 + 1;
-                        }
-                        update() {
-                            this.x += this.vx;
-                            this.y += this.vy;
-                            if (this.x < 0 || this.x > width) this.vx *= -1;
-                            if (this.y < 0 || this.y > height) this.vy *= -1;
-                        }
-                        draw() {
-                            ctx.fillStyle = 'rgba(0, 255, 157, 0.3)';
-                            ctx.beginPath();
-                            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                            ctx.fill();
-                        }
-                    }
-
-                    for(let i=0; i<50; i++) particles.push(new Particle());
-
-                    function animateBg() {
-                        ctx.clearRect(0, 0, width, height);
-                        ctx.strokeStyle = 'rgba(0, 255, 157, 0.05)';
-                        ctx.lineWidth =1;
-                        for(let i=0; i<particles.length; i++) {
-                            particles[i].update();
-                            particles[i].draw();
-                            for(let j=i; j<particles.length; j++) {
-                                const dx = particles[i].x - particles[j].x;
-                                const dy = particles[i].y - particles[j].y;
-                                const dist = Math.sqrt(dx*dx + dy*dy);
-                                if(dist < 150) {
-                                    ctx.beginPath();
-                                    ctx.moveTo(particles[i].x, particles[i].y);
-                                    ctx.lineTo(particles[j].x, particles[j].y);
-                                    ctx.stroke();
-                                }
-                            }
-                        }
-                        requestAnimationFrame(animateBg);
-                    }
-                    animateBg();
-
-                    // --- LOGIC: SKELETON LOADER ---
-                    function renderSkeleton() {
-                        grid.innerHTML = '';
-                        for(let i=0; i<6; i++) {
-                            grid.innerHTML += `
-                            <div class="s4-card-wrap">
-                                <div class="s4-card-inner">
-                                    <div class="s4-front">
-                                        <div class="s4-visual-layer skeleton" style="height: 55%"></div>
-                                        <div class="s4-content-layer">
-                                            <div class="s4-meta-top">
-                                                <div class="skeleton" style="width: 80px; height: 20px"></div>
-                                                <div class="skeleton" style="width: 50px; height: 15px"></div>
-                                            </div>
-                                            <div class="skeleton" style="width: 100%; height: 60px; margin-bottom: 15px"></div>
-                                            <div class="skeleton" style="width: 100%; height: 40px; margin-bottom: 20px"></div>
-                                            <div class="s4-actions">
-                                                <div class="skeleton" style="width: 100px; height: 20px"></div>
-                                                <div class="skeleton" style="width: 80px; height: 30px"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`;
-                        }
-                    }
-
-                    // --- LOGIC: FETCH NEWS ---
-                    async function fetchNews() {
-                        renderSkeleton();
-                        
-                        try {
-                            const selected = FEEDS.sort(() => 0.5 - Math.random()).slice(0, 3);
-                            
-                            const promises = selected.map(feed => 
-                                fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feed.url)}`)
-                                    .then(res => res.json())
-                                    .then(data => {
-                                        if(data.status === 'ok') {
-                                            return data.items.map(item => ({...item, sourceName: feed.name}));
-                                        }
-                                        return [];
-                                    })
-                                    .catch(e => { console.error(e); return []; })
-                            );
-
-                            const results = await Promise.all(promises);
-                            let allItems = results.flat();
-                            allItems.sort(() => 0.5 - Math.random());
-                            
-                            if(allItems.length === 0) throw new Error("No Data");
-                            
-                            renderCards(allItems.slice(0, 8)); 
-                            updateTicker(allItems.slice(0, 5));
-                            
-                        } catch (e) {
-                            console.error("Fetch Failed", e);
-                            grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--neon-green); font-family: 'Share Tech Mono'">
-                                [ERROR] CONNECTION TO NEXUS FAILED. RETRYING...
-                            </div>`;
-                        }
-                    }
-
-                    // --- LOGIC: RENDER CARDS (WITH FLIP) ---
-                    function renderCards(items) {
-                        grid.innerHTML = '';
-                        
-                        items.forEach((item, idx) => {
-                            const date = new Date(item.pubDate);
-                            const timeAgo = getTimeAgo(date);
-                            
-                            let desc = item.description.replace(/<[^>]*>?/gm, '');
-                            if(desc.length > 120) desc = desc.substring(0, 118) + '...';
-                            
-                            const videoUrl = VIDEOS[idx % VIDEOS.length];
-
-                            const cardWrap = document.createElement('div');
-                            cardWrap.className = 's4-card-wrap';
-                            
-                            // Vanilla Tilt applies to the WRAPPER. The inner card flips.
-                            cardWrap.setAttribute('data-tilt', '');
-                            cardWrap.setAttribute('data-tilt-max', '10');
-                            cardWrap.setAttribute('data-tilt-speed', '400');
-                            cardWrap.setAttribute('data-tilt-glare', '');
-                            cardWrap.setAttribute('data-tilt-max-glare', '0.2');
-
-                            // Inner HTML with Front and Back faces
-                            cardWrap.innerHTML = `
-                                <div class="s4-card-inner" id="card-inner-${idx}">
-                                    <!-- FRONT FACE -->
-                                    <div class="s4-front">
-                                        <div class="s4-visual-layer">
-                                            <video class="s4-video-bg" src="${videoUrl}" muted loop playsinline onmouseover="this.play()" onmouseout="this.pause()"></video>
-                                            <div class="s4-visual-overlay"></div>
-                                        </div>
-                                        <div class="s4-content-layer">
-                                            <div class="s4-meta-top">
-                                                <div class="s4-tag">${item.author ? item.author.substring(0,10).toUpperCase() : 'NEWS'}</div>
-                                                <div class="s4-time">${timeAgo}</div>
-                                            </div>
-                                            <div class="s4-title">${item.title}</div>
-                                            <div class="s4-desc">${desc}</div>
-                                            <div class="s4-actions">
-                                                <div class="s4-source-pill">
-                                                    <div class="s4-source-dot"></div> ${item.sourceName.toUpperCase()}
-                                                </div>
-                                                <!-- TRIGGERS FLIP -->
-                                                <button class="s4-btn-expand" onclick="toggleFlip(event, ${idx})">
-                                                    ACCESS <span style="font-size:1.2rem">&rarr;</span>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- BACK FACE -->
-                                    <div class="s4-back">
-                                        <div class="s4-back-content">
-                                            <h3>DECRYPTED DATA</h3>
-                                            <p>${item.description.replace(/<[^>]*>?/gm, '')}</p>
-                                        </div>
-                                        <div class="s4-back-actions">
-                                            <a href="${item.link}" target="_blank" class="s4-btn-full">READ FULL DATA</a>
-                                            <button class="s4-btn-back" onclick="toggleFlip(event, ${idx})">RETURN TO FEED</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-                            grid.appendChild(cardWrap);
-                        });
-                        
-                        // Re-init Vanilla Tilt for new elements
-                        VanillaTilt.init(document.querySelectorAll(".s4-card-wrap"), {
-                            max: 15,
-                            speed: 400,
-                            glare: true,
-                            "max-glare": 0.2,
-                        });
-                    }
-
-                    // --- FLIP FUNCTION ---
-                    window.toggleFlip = function(e, idx) {
-                        e.stopPropagation(); // Prevent tilt interference
-                        const cardWrap = document.querySelectorAll('.s4-card-wrap')[idx];
-                        cardWrap.classList.toggle('is-flipped');
-                    }
-
-                    function getTimeAgo(date) {
-                        const seconds = Math.floor((new Date() - date) / 1000);
-                        let interval = seconds / 31536000;
-                        if (interval > 1) return Math.floor(interval) + " Y AGO";
-                        interval = seconds / 2592000;
-                        if (interval > 1) return Math.floor(interval) + " M AGO";
-                        interval = seconds / 86400;
-                        if (interval > 1) return Math.floor(interval) + " D AGO";
-                        interval = seconds / 3600;
-                        if (interval > 1) return Math.floor(interval) + "H AGO";
-                        interval = seconds / 60;
-                        if (interval > 1) return Math.floor(interval) + "M AGO";
-                        return "NOW";
-                    }
-
-                    function updateTicker(items) {
-                        const text = items.map(i => ` // ${i.title.toUpperCase()} // `).join(" ");
-                        ticker.innerText = text + " // SYSTEM SECURE // WAITING FOR NEW TRANSMISSION...";
-                    }
-
-                    // --- MODAL LOGIC ---
-                    window.s4OpenModal = function(vid, title, desc, link, source, date) {
-                        document.getElementById('s4ModalVideo').src = vid;
-                        document.getElementById('s4ModalTitle').innerText = decodeURIComponent(title);
-                        document.getElementById('s4ModalDesc').innerText = decodeURIComponent(desc) + " \n\n [Full story content requires decryption at source server.]";
-                        document.getElementById('s4ModalLink').href = link;
-                        document.getElementById('s4ModalSource').innerText = source;
-                        document.getElementById('s4ModalDate').innerText = new Date(date).toLocaleDateString();
-                        document.getElementById('s4ModalReadTime').innerText = Math.floor(Math.random() * 5 + 3) + " MIN READ";
-                        
-                        modal.classList.add('active');
-                        document.getElementById('s4ModalVideo').play();
-                    }
-
-                    window.s4CloseModal = function() {
-                        modal.classList.remove('active');
-                        document.getElementById('s4ModalVideo').pause();
-                    }
-
-                    // --- COUNTDOWN TIMER ---
-                    let timeLeft = UPDATE_INTERVAL;
-                    setInterval(() => {
-                        timeLeft--;
-                        if(timeLeft <= 0) { 
-                            timeLeft = UPDATE_INTERVAL; 
-                            fetchNews();
-                        }
-                        document.getElementById('s4Countdown').innerText = "00:" + (timeLeft < 10 ? "0" + timeLeft : timeLeft);
-                    }, 1000);
-
-                    // --- INIT ---
-                    fetchNews();
-
-                })();
-            </script>
-        </section>
-
-        <footer style="text-align: center; padding: 60px 0; margin-top: 80px; color: var(--text-muted); font-family: var(--font-code); font-size: 0.8rem; border-top: 1px solid rgba(255,255,255,0.1);">
-            <p>© 2026 HEWLETT PACKARD ENTERPRISE // EXTREME TECHNICAL DOSSIER</p>
-        </footer>
-
-    </main>
+        </div>
+        <div style="text-align: center; color: #4b5563; font-size: 0.85rem; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.05);">
+            &copy; 2024 Hewlett Packard Enterprise Development LP.
+        </div>
+    </footer>
 
     <script>
-        // --- 1. HERO SLIDESHOW LOGIC (MIXED IMAGES & VIDEO) ---
+        // --- 1. Animated Intro Sequence ---
+        window.addEventListener('load', () => {
+            const overlay = document.getElementById('intro-overlay');
+            const curtain = document.querySelector('.intro-curtain');
+            const logo = document.querySelector('.intro-logo');
+            const body = document.body;
+            const heroTitle = document.querySelector('.hero-title');
+            const heroSub = document.querySelector('.hero-subtitle');
+            const heroBtns = document.querySelector('.btn-group');
 
-        // HERO MEDIA: Array of objects supporting both images and video
-        const HERO_MEDIA = [
-            { type: 'image', src: 'https://www.hpe.com/content/dam/hpe/newsroom/Media-Assets-Page/image-norend/HPE-Houston-campus-4-16-9%20.jpg' },
-            { type: 'image', src: 'https://www.pickardchilton.com/sites/default/files/styles/gallery_image/public/1812.054.jpg?itok=pfXF4bEq' },
-            { type: 'image', src: 'https://www.mmoser.com/wp-content/uploads/2023/09/hpe-sydney-reception-1200x675.jpg' },
-            { type: 'image', src: 'https://images.pexels.com/photos/1181263/pexels-photo-1181263.jpeg?auto=compress&cs=tinysrgb&w=1920' },
-            { type: 'image', src: 'https://arktura.com/wp-content/uploads/2023/02/Arktura-Vapor-Pixel-HPE-Houston-TX_WEB_2-scaled.jpg' }
-        ];
+            // Step 1: Show Logo
+            setTimeout(() => {
+                logo.style.opacity = '1';
+                logo.style.transform = 'scale(1)';
+            }, 300);
 
-        let heroIndex = 0;
-        const heroContainer = document.getElementById('hero-media-layer');
+            // Step 2: Drop Green Curtain
+            setTimeout(() => {
+                curtain.style.height = '100%';
+            }, 1000);
 
-        function initHeroSlideshow() {
-            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-
-            // Preload and append all elements
-            HERO_MEDIA.forEach((media, idx) => {
-                let el;
-                if(media.type === 'video') {
-                    el = document.createElement('video');
-                    el.src = media.src;
-                    el.autoplay = true;
-                    el.muted = true;
-                    el.loop = true;
-                    el.playsInline = true;
-                    el.className = 'hero-bg-element';
-                } else {
-                    el = document.createElement('img');
-                    el.src = media.src;
-                    el.className = 'hero-bg-element';
-                }
-                heroContainer.appendChild(el);
-            });
-
-            // Start with index 0 active
-            const elements = document.querySelectorAll('.hero-bg-element');
-            if(elements.length > 0) elements[0].classList.add('active');
-
-            setInterval(() => {
-                // Hide current
-                elements[heroIndex].classList.remove('active');
-                if(elements[heroIndex].tagName === 'VIDEO') elements[heroIndex].pause();
-
-                // Next
-                heroIndex = (heroIndex + 1) % elements.length;
+            // Step 3: Reveal Site & Fade Out Overlay
+            setTimeout(() => {
+                overlay.style.transition = 'opacity 0.8s ease';
+                overlay.style.opacity = '0';
+                body.classList.add('loaded'); // Enable scrolling
                 
-                // Show next
-                const nextEl = elements[heroIndex];
-                nextEl.classList.add('active');
-                if(nextEl.tagName === 'VIDEO') nextEl.play();
+                // Trigger Hero Content Animations
+                heroTitle.style.transition = 'all 0.8s ease-out';
+                heroTitle.style.opacity = '1';
+                heroTitle.style.transform = 'translateY(0)';
 
-            }, 6000);
-        }
-
-        // --- 2. ENTRANCE LOGIC ---
-        const entranceCheck = document.getElementById('entrance-check');
-        const loader = document.getElementById('intro-loader');
-        const slideshowContainer = document.getElementById('intro-slideshow');
-        const body = document.body;
-        const pageWrapper = document.querySelector('.page-wrapper');
-
-        // Init Slideshow Images
-        const slides = [
-            'https://www.investopedia.com/thmb/5rY--DU-wAibrkAhTt4ajU-SwBU=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-14457891641-69e0c37d50da4695803c7ff07920f1fb.jpg',
-            'https://vemi.com.au/wp-content/uploads/2023/05/mmoser_HPE9713_V01.02_LR.jpg',
-            'https://www.pickardchilton.com/sites/default/files/styles/gallery_image/public/1812.054.jpg?itok=pfXF4bEq'
-        ];
-        slides.forEach((src, index) => {
-            const img = document.createElement('img');
-            img.src = src;
-            img.alt = "HPE Data Center " + (index + 1);
-            img.className = `slide-img ${index === 0 ? 'active' : ''}`;
-            slideshowContainer.appendChild(img);
-        });
-        const slideElements = document.querySelectorAll('.slide-img');
-
-        entranceCheck.addEventListener('change', () => {
-            if(entranceCheck.checked) {
-                const msg = document.getElementById('loading-msg');
-                msg.innerText = "ACCESS GRANTED";
-                msg.style.color = "#fff";
-                
                 setTimeout(() => {
-                    loader.style.opacity = '0';
-                    loader.style.visibility = 'hidden';
-                    
-                    slideshowContainer.classList.add('active');
-                    let currentSlide = 0;
-                    
-                    const slideInterval = setInterval(() => {
-                        slideElements[currentSlide].classList.remove('active');
-                        currentSlide = (currentSlide + 1) % slideElements.length;
-                        slideElements[currentSlide].classList.add('active');
-                    }, 800);
+                    heroSub.style.transition = 'all 0.8s ease-out';
+                    heroSub.style.opacity = '1';
+                    heroSub.style.transform = 'translateY(0)';
+                }, 200);
 
-                    setTimeout(() => {
-                        clearInterval(slideInterval);
-                        slideshowContainer.style.opacity = '0';
-                        slideshowContainer.style.visibility = 'hidden';
-                        
-                        body.style.overflowY = 'auto';
-                        pageWrapper.style.opacity = '1';
-                        
-                        // Start Mixed Hero Slideshow
-                        initHeroSlideshow();
-                    }, 3200);
-                    
-                }, 800);
-            }
+                setTimeout(() => {
+                    heroBtns.style.transition = 'all 0.8s ease-out';
+                    heroBtns.style.opacity = '1';
+                    heroBtns.style.transform = 'translateY(0)';
+                }, 400);
+
+            }, 1800);
+
+            // Remove overlay from DOM after transition
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 2600);
         });
 
-        // --- 3. THEME ENGINE ---
-        function setTheme(theme, btn) {
-            const root = document.documentElement;
-            if(theme === 'corporate') {
-                root.setAttribute('data-theme', 'corporate');
-            } else {
-                root.setAttribute('data-theme', 'light');
-            }
-            document.querySelectorAll('.theme-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+        // --- 2. Dynamic Hero Slideshow (6.18 Seconds) ---
+        const slides = document.querySelectorAll('.hero-bg');
+        let currentSlide = 0;
+        const intervalTime = 6180; // Exact time requested
+
+        function nextSlide() {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
         }
 
-        // --- 4. AUDIO PLAYER LOGIC ---
-        function playAudio(btn, id) {
-            const isPlaying = btn.classList.contains('playing');
-            
-            document.querySelectorAll('.audio-trigger').forEach(b => {
-                b.classList.remove('playing');
-                b.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg> PLAY LOG';
+        setInterval(nextSlide, intervalTime);
+
+        // --- 3. FIX FOR JITTERY PARALLAX ---
+        let scrollY = 0;
+        const heroContent = document.querySelector('.hero-content');
+        
+        // Capture scroll event
+        window.addEventListener('scroll', () => {
+            scrollY = window.scrollY;
+        });
+
+        // Apply transform in animation frame (60fps)
+        function updateParallax() {
+            if (scrollY < window.innerHeight) {
+                // FIX 1: Round to nearest integer. This forces the browser to render text on full pixels,
+                // preventing the sub-pixel vibration/jitter.
+                // FIX 2: Reduced factor to 0.3 for a smoother, more subtle feel.
+                const translateY = Math.round(scrollY * 0.3); 
+                
+                // Fade out as you scroll down
+                const opacity = 1 - (scrollY / 700);
+                
+                // Apply using transform3d for hardware acceleration
+                heroContent.style.transform = `translate3d(0, ${translateY}px, 0)`;
+                heroContent.style.opacity = Math.max(opacity, 0);
+            }
+            requestAnimationFrame(updateParallax);
+        }
+
+        // Start loop
+        requestAnimationFrame(updateParallax);
+
+        // --- 4. Scroll Reveal for Cards ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
             });
+        }, { threshold: 0.2 });
 
-            if (!isPlaying) {
-                btn.classList.add('playing');
-                btn.innerHTML = '<svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> PLAYING...';
-                console.log(`Playing audio log: ${id}`);
-            }
+        document.querySelectorAll('.feature-card').forEach(card => observer.observe(card));
+
+        // --- 5. 3D Tilt Effect ---
+        const card = document.getElementById('tiltCard');
+        const wrapper = document.querySelector('.api-wrapper');
+
+        wrapper.addEventListener('mousemove', (e) => {
+            const rect = wrapper.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const xRot = -((y - rect.height / 2) / rect.height * 10);
+            const yRot = ((x - rect.width / 2) / rect.width * 10);
+            card.style.transform = `perspective(1500px) rotateX(${xRot}deg) rotateY(${yRot}deg)`;
+        });
+
+        wrapper.addEventListener('mouseleave', () => {
+            card.style.transform = `perspective(1500px) rotateX(0) rotateY(0)`;
+        });
+
+        // --- 6. API Logic ---
+        const methodSelect = document.getElementById('method');
+        const bodyGroup = document.getElementById('body-group');
+        const output = document.getElementById('output');
+
+        methodSelect.addEventListener('change', (e) => {
+            bodyGroup.style.display = (e.target.value === 'POST' || e.target.value === 'PUT') ? 'block' : 'none';
+        });
+
+        function syntaxHighlight(json) {
+            json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+                let cls = 'json-number';
+                if (/^"/.test(match)) {
+                    if (/:$/.test(match)) cls = 'json-key';
+                    else cls = 'json-string';
+                } else if (/true|false/.test(match)) cls = 'json-boolean';
+                return '<span class="' + cls + '">' + match + '</span>';
+            });
         }
+
+        function runApi() {
+            const btnText = document.getElementById('btn-text');
+            const originalText = btnText.innerText;
+            btnText.innerText = "Processing...";
+            
+            output.innerHTML = `<span style="color: #01A982;">> Connecting to hpe.com...</span>`;
+            
+            setTimeout(() => {
+                const method = methodSelect.value;
+                let response = {};
+                
+                if(method === 'GET') {
+                    response = { status: 200, data: [ { id: 1, type: "Compute", status: "Active" } ] };
+                } else {
+                    response = { status: 201, message: "Action successful" };
+                }
+                
+                output.innerHTML += `<br><br><span style="color: #8b949e;">// Response:</span><br><pre style="margin:0;">${syntaxHighlight(JSON.stringify(response, null, 2))}</pre>`;
+                btnText.innerText = originalText;
+            }, 1000);
+        }
+
+        // --- 7. Smooth Scrolling Anchors ---
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
     </script>
-</body>  
+</body>
 </html>
